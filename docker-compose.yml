@@ -1,0 +1,34 @@
+version: "3"
+services:
+
+  healenium-db:
+    image: postgres:14
+    container_name: healenium-db
+    environment:
+      POSTGRES_DB: healenium
+      POSTGRES_USER: healenium_user
+      POSTGRES_PASSWORD: healenium_pass
+    ports:
+      - "5432:5432"
+
+  healenium-backend:
+    image: healenium/healenium-backend:latest
+    container_name: healenium-backend
+    depends_on:
+      - healenium-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://healenium-db:5432/healenium
+      SPRING_DATASOURCE_USERNAME: healenium_user
+      SPRING_DATASOURCE_PASSWORD: healenium_pass
+    ports:
+      - "7878:7878"
+
+  healenium-proxy:
+    image: healenium/healenium-proxy:latest
+    container_name: healenium-proxy
+    depends_on:
+      - healenium-backend
+    environment:
+      HEALENIUM_BACKEND_URL: http://healenium-backend:7878
+    ports:
+      - "8085:8085"
