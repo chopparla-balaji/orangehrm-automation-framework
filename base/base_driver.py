@@ -9,6 +9,10 @@ class BaseDriver(ABC):
         ...
 
     @abstractmethod
+    def open_url(self, url:str) -> None:
+        ...
+
+    @abstractmethod
     def find_elements(self, locator:tuple[str,str]) -> list[WebElement]:
         ...
 

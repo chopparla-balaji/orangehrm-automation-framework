@@ -33,10 +33,13 @@ VISIBLE_TEXT = "visible_text"
 VALUE = "value"
 INDEX = "index"
 
-#Timeouts [Base]
+# Timeouts [Base]
 IMPLICIT_WAIT = 10
 EXPLICIT_WAIT = 20
 
 # Credentials
 ADMIN_USERNAME = "Admin"
 ADMIN_PASSWORD = "admin123"
+
+# App Url
+ORANGE_HRM_URL = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"

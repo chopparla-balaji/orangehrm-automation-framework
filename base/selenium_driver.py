@@ -1,5 +1,5 @@
 from typing import Callable
-from base_driver import BaseDriver
+from base.base_driver import BaseDriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
@@ -11,6 +11,9 @@ class SeleniumDriver(BaseDriver):
 
     def __init__(self, driver):
         self.driver = driver
+
+    def open_url(self, url:str) -> None:
+        self.driver.get(url)
 
     def find_element(self, locator:tuple[str,str]) -> WebElement:
         self.implicit_wait()
