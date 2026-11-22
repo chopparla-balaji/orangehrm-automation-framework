@@ -43,3 +43,11 @@ ADMIN_PASSWORD = "admin123"
 
 # App Url
 ORANGE_HRM_URL = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+
+# pages
+USER_NAME = "username"
+PASSWORD = "password"
+ROLE = "role"
+STATUS = "status"
+NAME = "name"
+CONFIRM_PASSWORD = "confirm_password"

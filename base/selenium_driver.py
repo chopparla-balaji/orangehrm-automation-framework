@@ -1,5 +1,6 @@
 from typing import Callable
 from base.base_driver import BaseDriver
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
@@ -61,6 +62,18 @@ class SeleniumDriver(BaseDriver):
             Select(web_element).select_by_value(value)
         elif select_type == INDEX and type(value) is int:
             Select(web_element).select_by_index(int(value))
+
+    def field_results(self, locator:tuple[str,str], value:str | int) -> None:
+        web_element = self.find_element(locator)
+        web_element.clear()
+        web_element.send_keys(value)
+        web_element.send_keys(Keys.ENTER)
+
+    def select_option_element(self, locator:tuple[str,str], value:str | int, timeout=EXPLICIT_WAIT) -> None:
+        opt_value = (locator[0], locator[1].format(option=value))
+        self.wait_until_element_visible(opt_value, timeout=timeout)
+        web_element = self.find_element(opt_value)
+        web_element.click()
 
     def wait_until_element_clickable(self, locator:tuple[str,str], timeout=EXPLICIT_WAIT) -> None:
         self.web_driver_wait(ec.element_to_be_clickable(locator), timeout)

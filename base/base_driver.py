@@ -53,6 +53,14 @@ class BaseDriver(ABC):
         ...
 
     @abstractmethod
+    def field_results(self, locator:tuple[str,str], value:str | int) -> None:
+        ...
+
+    @abstractmethod
+    def select_option_element(self, locator:tuple[str,str], value:str | int, timeout=EXPLICIT_WAIT) -> None:
+        ...
+
+    @abstractmethod
     def wait_until_element_clickable(self, locator:tuple[str,str], timeout=EXPLICIT_WAIT) -> None:
         ...
 
