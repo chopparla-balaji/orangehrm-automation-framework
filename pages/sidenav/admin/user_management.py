@@ -71,13 +71,16 @@ class UserManagement:
     def delete_user(self, user_name:str) -> None:
         user_manage = SystemUsers(self.selenium_driver)
         delete_action = (user_manage.DELETE_ACTION[0], user_manage.DELETE_ACTION[1].format(username=user_name))
+        user_manage.selenium_driver.window_scroll(1400)
         user_manage.selenium_driver.element_click(delete_action)
         user_manage.selenium_driver.wait_until_element_visible(user_manage.NO_CANCEL_USER)
         user_manage.selenium_driver.wait_until_element_visible(user_manage.DELETE_USER)
+        user_manage.selenium_driver.element_click(user_manage.DELETE_USER)
         user_manage.selenium_driver.wait_until_element_in_visible(user_manage.NO_CANCEL_USER)
         user_manage.selenium_driver.wait_until_element_in_visible(user_manage.DELETE_USER)
         self.selenium_driver.wait_until_element_visible(self.SUC_MSG_HEADING, 40)
         self.selenium_driver.wait_until_element_visible(self.DELETE_USER_MSG, 40)
+        user_manage.selenium_driver.window_scroll(-1400)
         user_manage.validate_system_user()
 
     def user_management(self, manage_user_details:dict[str, str], is_add=True, is_change_password=False) -> None:

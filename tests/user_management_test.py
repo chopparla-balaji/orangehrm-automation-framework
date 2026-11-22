@@ -30,18 +30,18 @@ class TestUserManagement:
 
     def test_validate_user_management(self, driver_initialization):
         selenium_driver = SeleniumDriver(driver_initialization)
-        user_management = SystemUsers(selenium_driver)
-        user_management.landing_user_management()
-        user_management.search_user({'username': self.username, 'role': self.role, 'name': self.name, 'status': self.status})
-        add_user = UserManagement(selenium_driver)
-        add_user.selenium_driver.element_click(user_management.ADD_USER)
-        add_user.validate_user_management()
-        add_user.add_user({'username': self.username, 'role': self.role, 'name': self.name, 'status': self.status,
+        system_users = SystemUsers(selenium_driver)
+        system_users.landing_user_management()
+        system_users.search_user({'username': self.username, 'role': self.role, 'name': self.name, 'status': self.status})
+        user_manage = UserManagement(selenium_driver)
+        user_manage.selenium_driver.element_click(system_users.ADD_USER)
+        user_manage.validate_user_management()
+        user_manage.add_user({'username': self.username, 'role': self.role, 'name': self.name, 'status': self.status,
                            'password': self.password, 'confirm_password': self.password})
-        add_user.update_user({'username': self.username, 'role': 'ESS', 'name': 'Orange  Test', 'status': 'Disabled',})
-        add_user.update_user({'username': self.username, 'role': 'Admin', 'name': 'Thomas Kutty Benny', 'status': self.status,
+        user_manage.update_user({'username': self.username, 'role': 'ESS', 'name': 'Orange  Test', 'status': 'Disabled',})
+        user_manage.update_user({'username': self.username, 'role': 'Admin', 'name': 'Thomas Kutty Benny', 'status': self.status,
                               'password': self.password, 'confirm_password': self.password}, is_change_password=True)
-        add_user.delete_user(self.username)
+        user_manage.delete_user(self.username)
 
     def test_logout(self, driver_initialization):
         selenium_driver = SeleniumDriver(driver_initialization)
