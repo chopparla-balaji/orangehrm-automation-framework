@@ -1,10 +1,10 @@
 from typing import Final
-from utils.type_checker import Locator, ADD_USER, EDIT_USER
-from utils.page_titles import PAGE_TITLE
 from selenium.webdriver.common.by import By
 from base.selenium_driver import SeleniumDriver
 from pages.sidenav.admin.system_users import SystemUsers
+from utils.type_checker import Locator, ADD_USER, EDIT_USER
 from utils.constants import USER_NAME, PASSWORD, CONFIRM_PASSWORD, NAME, ROLE, STATUS
+
 
 class UserManagement:
 
@@ -22,7 +22,7 @@ class UserManagement:
     SAVE: Final[Locator] = (By.XPATH, "//button[normalize-space()='Save'][@type='submit']")
 
     # Option Value
-    OPT_VAL: Final[Locator] = (By.XPATH, "//span[normalize-space()='{option}']/parent::div[@role='option']")
+    OPT_VAL: Locator = (By.XPATH, "//span[normalize-space()='{option}']/parent::div[@role='option']")
 
     # Edit User
     EDIT_USER_HEADING: Final[Locator] = (By.XPATH, "//h6[normalize-space()='Edit User']")
@@ -30,15 +30,15 @@ class UserManagement:
                                                  "following::input[@type='checkbox'][1]")
 
     # Messages
-    SUC_MSG_HEADING:Final[Locator] = (By.XPATH, "//p[normalize-space()='Success']")
-    ADD_USER_MSG:Final[Locator] = (By.XPATH, "//p[normalize-space()='Successfully Saved']")
-    UPDATE_USER_MSG:Final[Locator] = (By.XPATH, "//p[normalize-space()='Successfully Updated']")
-    DELETE_USER_MSG:Final[Locator] = (By.XPATH, "//p[normalize-space()='Successfully Deleted']")
+    SUC_MSG_HEADING: Final[Locator] = (By.XPATH, "//p[normalize-space()='Success']")
+    ADD_USER_MSG: Final[Locator] = (By.XPATH, "//p[normalize-space()='Successfully Saved']")
+    UPDATE_USER_MSG: Final[Locator] = (By.XPATH, "//p[normalize-space()='Successfully Updated']")
+    DELETE_USER_MSG: Final[Locator] = (By.XPATH, "//p[normalize-space()='Successfully Deleted']")
 
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def validate_user_management(self, is_add=True) -> None:
+    def validate_user_management(self, is_add: bool = True) -> None:
         if is_add:
             self.selenium_driver.wait_until_element_present(self.ADD_USER_HEADING)
         self.selenium_driver.wait_until_element_present(self.USERNAME)
@@ -50,13 +50,12 @@ class UserManagement:
             self.selenium_driver.wait_until_element_present(self.CONFIRM_PASSWORD)
         self.selenium_driver.wait_until_element_present(self.CANCEL)
         self.selenium_driver.wait_until_element_present(self.SAVE)
-        self.selenium_driver.validate_page_title(PAGE_TITLE)
+        self.selenium_driver.validate_page_title()
 
-    def add_user(self, user_details:dict[str, str]) -> None:
-        # user details contains [role, name, status, username, password, confirm_password] [Give Dict keys all mandatory]
+    def add_user(self, user_details: dict[str, str]) -> None:
         self.user_management(user_details)
 
-    def update_user(self, user_details:dict[str, str], is_change_password=False) -> None:
+    def update_user(self, user_details: dict[str, str], is_change_password: bool = False) -> None:
         user_manage = SystemUsers(self.selenium_driver)
         user_manage.selenium_driver.window_scroll(1400)
         if USER_NAME in user_details:
@@ -68,7 +67,7 @@ class UserManagement:
         else:
             raise KeyError("Missing required fields of username")
 
-    def delete_user(self, user_name:str) -> None:
+    def delete_user(self, user_name: str) -> None:
         user_manage = SystemUsers(self.selenium_driver)
         delete_action = (user_manage.DELETE_ACTION[0], user_manage.DELETE_ACTION[1].format(username=user_name))
         user_manage.selenium_driver.window_scroll(1400)
@@ -83,7 +82,8 @@ class UserManagement:
         user_manage.selenium_driver.window_scroll(-1400)
         user_manage.validate_system_user()
 
-    def user_management(self, manage_user_details:dict[str, str], is_add=True, is_change_password=False) -> None:
+    def user_management(self, manage_user_details: dict[str, str], is_add: bool = True,
+                        is_change_password: bool = False) -> None:
         user_manage = SystemUsers(self.selenium_driver)
         if all(key in manage_user_details for key in (ADD_USER if is_add or
                                                                   (not is_add and is_change_password) else EDIT_USER)):

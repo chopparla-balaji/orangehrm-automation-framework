@@ -29,7 +29,7 @@ class BaseDriver(ABC):
         ...
 
     @abstractmethod
-    def validate_page_title(self,page_title:str) -> None:
+    def validate_page_title(self) -> None:
         ...
 
     @abstractmethod

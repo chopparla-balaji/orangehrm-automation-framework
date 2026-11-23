@@ -1,10 +1,10 @@
 from typing import Final
 from utils.type_checker import Locator
-from utils.page_titles import PAGE_TITLE
 from selenium.webdriver.common.by import By
 from base.selenium_driver import SeleniumDriver
 from pages.sidenav.sidenav import SideNav
 from utils.constants import USER_NAME, ROLE, NAME, STATUS
+
 
 class SystemUsers:
 
@@ -19,15 +19,15 @@ class SystemUsers:
     ADD_USER: Final[Locator] = (By.XPATH, "//button[normalize-space()='Add']")
     REC_ALL_CHX: Final[Locator] = (By.XPATH, "//div[@role='columnheader' and normalize-space()='Username']/preceding"
                                              "::input[@type='checkbox'][1]")
-    DELETE_SELECT:Final[Locator] = (By.XPATH, "//button[contains(text(),'Delete Selected')]")
-    DELETE_ACTION:Final[Locator] = (By.XPATH, "//div[normalize-space()='{username}']/following::button[@type='button'][1]")
-    UPDATE_ACTION:Final[Locator] = (By.XPATH, "//div[normalize-space()='{username}']/following::button[@type='button'][2]")
+    DELETE_SELECT: Final[Locator] = (By.XPATH, "//button[contains(text(),'Delete Selected')]")
+    DELETE_ACTION: Locator = (By.XPATH, "//div[normalize-space()='{username}']/following::button[@type='button'][1]")
+    UPDATE_ACTION: Locator = (By.XPATH, "//div[normalize-space()='{username}']/following::button[@type='button'][2]")
     NO_CANCEL_USER: Final[Locator] = (By.XPATH, "//button[normalize-space()='No, Cancel']")
     DELETE_USER: Final[Locator] = (By.XPATH, "//button[normalize-space()='Yes, Delete']")
-    CLOSE_DIALOG:Final[Locator] = (By.XPATH, "//button[normalize-space()='×']")
+    CLOSE_DIALOG: Final[Locator] = (By.XPATH, "//button[normalize-space()='×']")
 
     # Option Value
-    OPT_VAL:Final[Locator] = (By.XPATH, "//span[normalize-space()='{option}']/parent::div[@role='option']")
+    OPT_VAL: Locator = (By.XPATH, "//span[normalize-space()='{option}']/parent::div[@role='option']")
 
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
@@ -46,10 +46,9 @@ class SystemUsers:
         self.selenium_driver.wait_until_element_present(self.STATUS)
         self.selenium_driver.wait_until_element_present(self.RESET)
         self.selenium_driver.wait_until_element_present(self.SEARCH)
-        self.selenium_driver.validate_page_title(PAGE_TITLE)
+        self.selenium_driver.validate_page_title()
 
-    def search_user(self, user_information:dict[str, str]) -> None:
-        # user information contains [username, role, name, status] [Give Dict keys]
+    def search_user(self, user_information: dict[str, str]) -> None:
         if USER_NAME in user_information:
             self.selenium_driver.send_keys(self.USERNAME, user_information[USER_NAME])
         if ROLE in user_information:
@@ -62,4 +61,3 @@ class SystemUsers:
             self.selenium_driver.element_click(self.STATUS)
             self.selenium_driver.select_option_element(self.OPT_VAL, user_information[STATUS], 40)
         self.selenium_driver.element_click(self.SEARCH)
-

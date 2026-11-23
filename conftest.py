@@ -1,4 +1,7 @@
 import pytest
+from pages.login_page import LoginPage
+from pages.sidenav.dashboard import Dashboard
+from base.selenium_driver import SeleniumDriver
 from utils.constants import (BROWSER_CL, IS_PARALLEL_CL, IS_NORMAL_DRIVER_CL, BROWSER, IS_PARALLEL, IS_NORMAL_DRIVER,
                              FIREFOX, CHROME, EDGE, TRUE_STR, FALSE_STR, STORE)
 
@@ -28,3 +31,16 @@ def driver_initialization(request, cross_browser):
         fixture_name = "thread_driver" if is_normal_driver else "thread_heal_driver"
 
     return request.getfixturevalue(fixture_name)
+
+@pytest.fixture(scope="function")
+def selenium_driver(driver_initialization):
+    return SeleniumDriver(driver_initialization)
+
+@pytest.fixture(scope="function")
+def login_in(selenium_driver):
+    login_page = LoginPage(selenium_driver)
+    login_page.open_orangehrm()
+    login_page.enter_credentials()
+    login_page.selenium_driver.element_click(login_page.LOGIN_BTN)
+    dashboard = Dashboard(selenium_driver)
+    dashboard.validate_dashboard()

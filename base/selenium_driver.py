@@ -1,5 +1,6 @@
 from typing import Callable
 from base.base_driver import BaseDriver
+from utils.page_titles import PAGE_TITLE
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
@@ -37,8 +38,8 @@ class SeleniumDriver(BaseDriver):
     def execute_script(self, script:str) -> None:
         self.driver.execute_script(script)
 
-    def validate_page_title(self, page_title:str) -> None:
-        assert self.driver.title == page_title
+    def validate_page_title(self) -> None:
+        assert self.driver.title == PAGE_TITLE
 
     def window_scroll(self, scroll_val:int) -> None:
         self.implicit_wait()
