@@ -1,0 +1,246 @@
+# ============================================================================
+# Python
+# ============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+venv.bak/
+env.bak/
+
+# ============================================================================
+# IDE & Editor
+# ============================================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+*.iml
+.classpath
+.c9/
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# VS Code specific
+.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+.vim/
+*.swp
+*.swo
+
+# ============================================================================
+# Testing & Reports
+# ============================================================================
+.pytest_cache/
+.tox/
+htmlcov/
+.coverage
+.coverage.*
+*.cover
+.hypothesis/
+allure-results/
+allure-report/
+test-results/
+**/test_*.xml
+*.html
+!pytest.html
+report.html
+junit.xml
+
+# ============================================================================
+# Logs
+# ============================================================================
+*.log
+logs/
+*.log.*
+debug.log
+
+# ============================================================================
+# Environment & Configuration
+# ============================================================================
+.env
+.env.local
+.env.*.local
+.env.production.local
+.env.development.local
+.env.test.local
+config.local.py
+settings.local.py
+
+# ============================================================================
+# Screenshots & Videos
+# ============================================================================
+screenshots/
+videos/
+artifacts/
+*.png
+*.jpg
+*.jpeg
+*.mp4
+*.avi
+
+# ============================================================================
+# Database & Data
+# ============================================================================
+*.db
+*.sqlite
+*.sqlite3
+*.pkl
+*.pickle
+test_data/
+*.csv
+
+# ============================================================================
+# Docker & Kubernetes
+# ============================================================================
+docker-compose.override.yml
+.docker/
+docker-sync.yml
+.dockerignore
+
+# ============================================================================
+# CI/CD
+# ============================================================================
+.github/
+.gitlab-ci.yml
+.circleci/
+jenkins/
+.travis.yml
+.appveyor.yml
+
+# ============================================================================
+# OS Specific
+# ============================================================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.windows-build-tools/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+.directory
+
+# ============================================================================
+# Temporary Files
+# ============================================================================
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*~
+.lock
+
+# ============================================================================
+# IDE Caches
+# ============================================================================
+.cache/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ============================================================================
+# NodeJS (if using npm packages)
+# ============================================================================
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# ============================================================================
+# Sensitive Information
+# ============================================================================
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+*.cer
+secrets/
+credentials/
+.aws/
+.gcp/
+
+# ============================================================================
+# Build Artifacts
+# ============================================================================
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.whl
+
+# ============================================================================
+# Healenium Specific
+# ============================================================================
+healenium-reports/
+healing-logs/
+healing-data/
+
+# ============================================================================
+# Jenkins Specific
+# ============================================================================
+jenkins/workspace/
+jenkins/logs/
+.jenkins/
+
+# ============================================================================
+# Custom Project Files
+# ============================================================================
+test_output/
+results/
+reports/
+temp/

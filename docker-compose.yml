@@ -1,7 +1,6 @@
-version: "3"
 services:
 
-  # ── Healenium Services ──────────────────
+  # ── PostgreSQL Database ──────────────────
   healenium-db:
     image: postgres:14
     container_name: healenium-db
@@ -11,40 +10,73 @@ services:
       POSTGRES_PASSWORD: healenium_pass
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U healenium_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  # ── Healenium Backend ────────────────────
   healenium-backend:
-    image: healenium/healenium-backend:latest
+    image: healenium/hlm-backend:4.0.2
     container_name: healenium-backend
     depends_on:
-      - healenium-db
+      healenium-db:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://healenium-db:5432/healenium
       SPRING_DATASOURCE_USERNAME: healenium_user
       SPRING_DATASOURCE_PASSWORD: healenium_pass
+      SERVER_PORT: 7878
     ports:
       - "7878:7878"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7878/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  # ── Healenium Proxy ──────────────────────
   healenium-proxy:
-    image: healenium/healenium-proxy:latest
+    image: healenium/hlm-proxy:2.3.0
     container_name: healenium-proxy
     depends_on:
-      - healenium-backend
+      healenium-backend:
+        condition: service_healthy
     environment:
-      HEALENIUM_BACKEND_URL: http://healenium-backend:7878
+      HLM_BACKEND_URL: http://healenium-backend:7878
+      HLM_AUTO_HEALING: "true"
+      HLM_REPORT_PATH: /reports
     ports:
       - "8085:8085"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # ── Jenkins ─────────────────────────────
+  # ── Jenkins CI/CD ────────────────────────
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
     ports:
       - "8080:8080"
+      - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      JENKINS_OPTS: "--httpPort=8080"
     depends_on:
       - healenium-proxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
 
 volumes:
+  postgres_data:
   jenkins_home:
