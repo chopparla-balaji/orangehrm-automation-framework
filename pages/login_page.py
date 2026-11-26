@@ -10,7 +10,7 @@ class LoginPage:
     USERNAME: Final[Locator] = (By.NAME, "username")
     PASSWORD: Final[Locator] = (By.NAME, "password")
     LOGIN_BTN: Final[Locator] = (By.XPATH, "//button[@type='submit']")
-    FORGOT_YOUR_PASSWORD: Final[Locator] = (By.XPATH, "//p[normalize-space()='Forgot your password?']")
+    FORGOT_YOUR_PASSWORD: Final[Locator] = (By.XPATH, "//button[@type='submit']/following::p[1]")
     ORANGE_HRM_INC: Final[Locator] = (By.LINK_TEXT, "OrangeHRM, Inc")
 
     def __init__(self, selenium_driver: SeleniumDriver) -> None:

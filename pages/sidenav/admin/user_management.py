@@ -8,26 +8,20 @@ from utils.constants import USER_NAME, PASSWORD, CONFIRM_PASSWORD, NAME, ROLE, S
 
 class UserManagement:
 
-    ADD_USER_HEADING: Final[Locator] = (By.XPATH, "//h6[normalize-space()='Add User']")
-    USER_ROLE: Final[Locator] = (By.XPATH, "//label[text()='User Role']/ancestor::div[2]/descendant::div[2]/div[1]")
-    EMPLOYEE_NAME: Final[Locator] = (By.XPATH, "//label[text()='Employee Name']/following::input[@placeholder='Type "
-                                               "for hints...'][1]")
-    USERNAME: Final[Locator] = (By.XPATH, "//label[text()='Username']/ancestor::div[2]/descendant::input[1]")
-    STATUS: Final[Locator] = (By.XPATH, "//label[text()='Status']/ancestor::div[2]/descendant::div[2]/div[1]")
-    PASSWORD: Final[Locator] = (By.XPATH, "//label[normalize-space()='Password']/following::input[@type='password' "
-                                          "and @autocomplete='off'][1]")
-    CONFIRM_PASSWORD: Final[Locator] = (By.XPATH, "//label[normalize-space()='Confirm Password']/following::input"
-                                                  "[@type='password' and @autocomplete='off'][1]")
-    CANCEL: Final[Locator] = (By.XPATH, "//button[normalize-space()='Cancel'][@type='button']")
-    SAVE: Final[Locator] = (By.XPATH, "//button[normalize-space()='Save'][@type='submit']")
+    USER_ROLE: Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[1]/ancestor::div[2]")
+    EMPLOYEE_NAME: Final[Locator] = (By.XPATH, "(//form/descendant::input)[1]")
+    USERNAME: Final[Locator] = (By.XPATH, "(//form/descendant::input)[2]")
+    STATUS: Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[2]/ancestor::div[2]")
+    PASSWORD: Final[Locator] = (By.XPATH, "(//input[@type='password' and @autocomplete='off'])[1]")
+    CONFIRM_PASSWORD: Final[Locator] = (By.XPATH, "(//input[@type='password' and @autocomplete='off'])[2]")
+    CANCEL: Final[Locator] = (By.XPATH, "//button[@type='button']")
+    SAVE: Final[Locator] = (By.XPATH, "//button[@type='submit']")
 
     # Option Value
     OPT_VAL: Locator = (By.XPATH, "//span[normalize-space()='{option}']/parent::div[@role='option']")
 
     # Edit User
-    EDIT_USER_HEADING: Final[Locator] = (By.XPATH, "//h6[normalize-space()='Edit User']")
-    CHANGE_PASSWORD: Final[Locator] = (By.XPATH, "//label[normalize-space()='Change Password ?']/"
-                                                 "following::input[@type='checkbox'][1]")
+    CHANGE_PASSWORD: Final[Locator] = (By.XPATH, "//input[@type='checkbox']/following::span[1]")
 
     # Messages
     SUC_MSG_HEADING: Final[Locator] = (By.XPATH, "//p[normalize-space()='Success']")

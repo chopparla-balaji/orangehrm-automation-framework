@@ -5,26 +5,23 @@ from base.selenium_driver import SeleniumDriver
 
 class EmployeeList:
 
-    EMPLOYEE_NAME: Final[Locator] = (By.XPATH, "//label[normalize-space()='Employee Name']/following::input"
-                                               "[@placeholder='Type for hints...'][1]")
-    EMPLOYEE_ID: Locator = (By.XPATH, "//label[normalize-space()='Employee Id']/following::input[1]/ancestor::div[2]"
-                                      "/descendant::div[2]/div[1]")
-    EMPLOYMENT_STATUS: Locator = (By.XPATH, "//label[normalize-space()='Employment Status']")
-    INCLUDE: Locator = (By.XPATH, "//label[normalize-space()='Include']/ancestor::div[2]/descendant::div[2]/div[1]")
-    SUPERVISOR_NAME: Locator = (By.XPATH, "//label[normalize-space()='Supervisor Name']/following::input"
-                                               "[@placeholder='Type for hints...'][1]")
-    JOB_TITLE: Locator = (By.XPATH, "//label[normalize-space()='Job Title']/ancestor::div[2]/descendant::div[2]/div[1]")
-    SUB_UNIT:Locator = (By.XPATH, "//label[normalize-space()='Sub Unit']/ancestor::div[2]/descendant::div[2]/div[1]")
-    RESET: Final[Locator] = (By.XPATH, "//button[normalize-space()='Reset']")
-    SEARCH: Final[Locator] = (By.XPATH, "//button[normalize-space()='Search']")
-    ADD_USER: Final[Locator] = (By.XPATH, "//button[normalize-space()='Add']")
-    REC_ALL_CHX: Final[Locator] = (By.XPATH, "//div[@role='columnheader' and normalize-space()='Id']/preceding"
-                                             "::input[@type='checkbox'][1]")
+    EMPLOYEE_NAME: Final[Locator] = (By.XPATH, "(//form/descendant::input)[1]")
+    EMPLOYEE_ID: Locator = (By.XPATH, "(//form/descendant::input)[2]")
+    EMPLOYMENT_STATUS: Locator = (By.XPATH, "(//div[@tabIndex='0'])[1]/ancestor::div[2]")
+    INCLUDE: Locator = (By.XPATH, "(//div[@tabIndex='0'])[1]/ancestor::div[2]")
+    SUPERVISOR_NAME: Locator = (By.XPATH, "(//form/descendant::input)[3]")
+    JOB_TITLE: Locator = (By.XPATH, "(//div[@tabIndex='0'])[1]/ancestor::div[2]")
+    SUB_UNIT:Locator = (By.XPATH, "(//div[@tabIndex='0'])[1]/ancestor::div[2]")
+    RESET: Final[Locator] = (By.XPATH, "//button[@type='reset']")
+    SEARCH: Final[Locator] = (By.XPATH, "//button[@type='submit']")
+    ADD_EMPLOYEE: Final[Locator] = (By.XPATH, "//button[@type='button']")
+    REC_ALL_CHX: Final[Locator] = (By.XPATH, "//div[@role='columnheader']/descendant::span[1]")
     DELETE_ACTION: Locator = (By.XPATH, "//div[normalize-space()='{Id}']/following::button[@type='button'][1]")
     UPDATE_ACTION: Locator = (By.XPATH, "//div[normalize-space()='{Id}']/following::button[@type='button'][2]")
-    NO_CANCEL_USER: Final[Locator] = (By.XPATH, "//button[normalize-space()='No, Cancel']")
-    DELETE_USER: Final[Locator] = (By.XPATH, "//button[normalize-space()='Yes, Delete']")
-    CLOSE_DIALOG: Final[Locator] = (By.XPATH, "//button[normalize-space()='×']")
+    NO_CANCEL_EMP: Final[Locator] = (By.XPATH, "//div[@role='dialog']/descendant::button[@type='button'][1]")
+    DELETE_EMPLOYEE: Final[Locator] = (By.XPATH, "//div[@role='dialog']/descendant::button[@type='button'][2]")
+    CLOSE_DIALOG: Final[Locator] = (By.XPATH, "//div[@role='dialog']/descendant::button[1]")
+    EMPLOYEE_LIST: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[2]")
 
     # Option Value
     OPT_VAL: Locator = (By.XPATH, "//span[normalize-space()='{option}']/parent::div[@role='option']")

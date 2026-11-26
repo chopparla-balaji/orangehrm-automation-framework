@@ -51,3 +51,5 @@ ROLE = "role"
 STATUS = "status"
 NAME = "name"
 CONFIRM_PASSWORD = "confirm_password"
+
+EMPTY_SEARCH_RESULT = "No search results"

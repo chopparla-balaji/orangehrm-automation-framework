@@ -1,6 +1,7 @@
 import pytest
 from pages.login_page import LoginPage
 from pages.sidenav.dashboard import Dashboard
+from pages.usermenu import UserMenu
 from base.selenium_driver import SeleniumDriver
 from utils.constants import (BROWSER_CL, IS_PARALLEL_CL, IS_NORMAL_DRIVER_CL, BROWSER, IS_PARALLEL, IS_NORMAL_DRIVER,
                              FIREFOX, CHROME, EDGE, TRUE_STR, FALSE_STR, STORE)
@@ -44,3 +45,10 @@ def login_in(selenium_driver):
     login_page.selenium_driver.element_click(login_page.LOGIN_BTN)
     dashboard = Dashboard(selenium_driver)
     dashboard.validate_dashboard()
+
+@pytest.fixture(scope="function")
+def log_out(selenium_driver):
+    user_menu = UserMenu(selenium_driver)
+    user_menu.logout_orm()
+    login_page = LoginPage(selenium_driver)
+    login_page.validate_login_page()

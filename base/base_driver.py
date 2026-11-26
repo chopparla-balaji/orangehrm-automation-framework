@@ -25,6 +25,10 @@ class BaseDriver(ABC):
         ...
 
     @abstractmethod
+    def get_text(self, locator:tuple[str,str]) -> str:
+        ...
+
+    @abstractmethod
     def execute_script(self, script:str) -> None:
         ...
 

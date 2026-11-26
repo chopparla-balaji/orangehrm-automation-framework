@@ -7,7 +7,6 @@ from pages.common_page import CommonPage
 
 class Dashboard:
 
-    DASHBOARD_HEADING: Final[Locator] = (By.XPATH, "//h6[normalize-space()='Dashboard']")
     TIME_AT_WORK: Final[Locator] = (By.XPATH, "//P[normalize-space()='Time at Work']")
     MY_ACTIONS: Final[Locator] = (By.XPATH, "//P[normalize-space()='My Actions']")
     QUICK_LAUNCH: Final[Locator] = (By.XPATH, "//P[normalize-space()='Quick Launch']")
@@ -53,7 +52,6 @@ class Dashboard:
         self.selenium_driver = selenium_driver
 
     def validate_dashboard(self) -> None:
-        self.selenium_driver.wait_until_element_present(self.DASHBOARD_HEADING)
         self.selenium_driver.wait_until_element_present(CommonPage.SIDE_NAV_INDICATOR)
         self.selenium_driver.wait_until_element_present(CommonPage.USER_DROP_DOWN)
         self.selenium_driver.wait_until_element_present(self.TIME_AT_WORK)

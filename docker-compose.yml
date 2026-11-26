@@ -19,8 +19,9 @@ services:
       retries: 5
 
   # ── Healenium Backend ────────────────────
+  # Note: If 4.0.0 fails, try using 'latest' tag
   healenium-backend:
-    image: healenium/hlm-backend:4.0.2
+    image: healenium/hlm-backend:4.0.0
     container_name: healenium-backend
     depends_on:
       healenium-db:
@@ -39,8 +40,9 @@ services:
       retries: 5
 
   # ── Healenium Proxy ──────────────────────
+  # Note: If 2.2.1 fails, try using 'latest' tag
   healenium-proxy:
-    image: healenium/hlm-proxy:2.3.0
+    image: healenium/hlm-proxy:2.2.1
     container_name: healenium-proxy
     depends_on:
       healenium-backend:

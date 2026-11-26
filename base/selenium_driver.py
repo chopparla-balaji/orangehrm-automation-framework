@@ -35,6 +35,9 @@ class SeleniumDriver(BaseDriver):
     def element_click(self, locator:tuple[str,str]) -> None:
         self.find_element(locator).click()
 
+    def get_text(self, locator:tuple[str,str]) -> str:
+        return self.find_element(locator).text
+
     def execute_script(self, script:str) -> None:
         self.driver.execute_script(script)
 

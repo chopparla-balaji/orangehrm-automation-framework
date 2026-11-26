@@ -178,7 +178,7 @@ HEALENIUM_PROXY_URL = "http://localhost:8085"
 pytest tests/
 
 # Run specific test file
-pytest tests/user_management_test.py
+pytest tests/system_user_search_test.py
 
 # Run with verbose output
 pytest tests/ -v
@@ -221,7 +221,7 @@ pytest tests/
 pytest tests/ -v -s
 
 # With specific test
-pytest tests/user_management_test.py::test_create_user -v
+pytest tests/system_user_search_test.py::test_create_user -v
 
 # Generate HTML report
 pytest tests/ --html=report.html --self-contained-html
