@@ -29,6 +29,25 @@ class PersonalDetails:
     SAVE_FIELDS: Final[Locator] = (By.XPATH, "(//button[@type='submit'])[2]")
     CANCEL_ATTACH: Final[Locator] = (By.XPATH, "(//button[@type='button'])[1]")
     SAVE_ATTACH: Final[Locator] = (By.XPATH, "(//button[@type='submit'])[3]")
+    PERSONAL_DETAILS: Final[Locator] = (By.XPATH, "//div[@role='tablist']/div[1]/a")
 
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
+
+    def wait_for_personal_details_to_load(self, is_personal_details: bool = True):
+        if is_personal_details:
+            self.selenium_driver.element_click(self.PERSONAL_DETAILS)
+        self.selenium_driver.wait_until_element_present(self.EMPLOYEE_FIRST_NAME)
+        self.selenium_driver.wait_until_element_present(self.EMPLOYEE_LAST_NAME)
+        self.selenium_driver.wait_until_element_present(self.EMPLOYEE_MIDDLE_NAME)
+        self.selenium_driver.wait_until_element_present(self.EMPLOYEE_ID)
+        self.selenium_driver.wait_until_element_present(self.DRIVERS_LICENSE_NUMBER)
+        self.selenium_driver.wait_until_element_present(self.LICENSE_EXPIRY_DATE)
+        self.selenium_driver.wait_until_element_present(self.NATIONALITY)
+        self.selenium_driver.wait_until_element_present(self.MARITAL_STATUS)
+        self.selenium_driver.wait_until_element_present(self.DATE_OF_BIRTH)
+        self.selenium_driver.wait_until_element_present(self.MALE)
+        self.selenium_driver.wait_until_element_present(self.FEMALE)
+        self.selenium_driver.wait_until_element_present(self.SMOKER)
+        self.selenium_driver.wait_until_element_present(self.SAVE_DET)
+

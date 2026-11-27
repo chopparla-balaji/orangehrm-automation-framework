@@ -11,16 +11,25 @@ class OptionalFields:
     SHOW_SIN_FIELD_IN_PERSONAL_DETAILS:Final[Locator] = (By.XPATH, "(//input[@type='checkbox'])[3]/following::span[1]")
     SHOW_US_TAX_EXEMPTIONS_MENU: Final[Locator] = (By.XPATH, "(//input[@type='checkbox'])[4]/following::span[1]")
     SAVE: Final[Locator] = (By.XPATH, "//button[@type='submit']")
-    OPTIONAL_FIELDS: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[3]/"
+    OPTIONAL_FIELDS: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[1]/"
                                           "descendant::ul[1]/descendant::li[1]")
 
 class CustomFields:
 
-    ADD_Fields: Final[Locator] = (By.XPATH, "//button[@type='button']")
+    ADD_FIELDS: Final[Locator] = (By.XPATH, "//header/following::button[@type='button']")
     DELETE_CUSTOM_FIELD: Final[Locator] = (By.XPATH, "//div[normalize-space()='{field_name}']/following::button[@type='button'][1]")
     EDIT_CUSTOM_FIELD: Final[Locator] = (By.XPATH, "//div[normalize-space()='{field_name}']/following::button[@type='button'][2]")
-    CUSTOM_FIELDS: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[3]/"
+    CUSTOM_FIELDS: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[1]/"
                                           "descendant::ul[1]/descendant::li[2]")
+
+class AddCustomFields:
+
+    FIELD_NAME: Final[Locator] = (By.XPATH, "(//form/descendant::input)[1]")
+    SCREEN: Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[1]/ancestor::div[2]")
+    TYPE: Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[2]/ancestor::div[2]")
+
+    CANCEL: Final[Locator] = (By.XPATH, "//button[@type='button']")
+    SUBMIT: Final[Locator] = (By.XPATH, "//button[@type='submit']")
 
 class EditCustomFields:
 
@@ -36,7 +45,7 @@ class DataImport:
     SELECT_FILE: Final[Locator] = (By.XPATH, "//input[@type='file']")
     UPLOAD: Final[Locator] = (By.XPATH, "//button[@type='submit']")
     DOWNLOAD_SAMPLE_CSV: Final[Locator] = (By.XPATH, "//form/preceding::a[1]")
-    DATA_IMPORT: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[3]/"
+    DATA_IMPORT: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[1]/"
                                           "descendant::ul[1]/descendant::li[3]")
 
 class ManageConfiguration:
@@ -45,3 +54,48 @@ class ManageConfiguration:
 
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
+
+    def wait_for_optional_fields_to_load(self, is_landing=True):
+        if is_landing:
+            self.selenium_driver.element_click(self.CONFIGURATION)
+            self.selenium_driver.wait_until_element_visible(OptionalFields.OPTIONAL_FIELDS)
+            self.selenium_driver.element_click(OptionalFields.OPTIONAL_FIELDS)
+        self.selenium_driver.wait_until_element_present(OptionalFields.SHOW_NICKNAME_SMOKER_MILITARY_SERVICE_IN_PERSONAL_DETAILS)
+        self.selenium_driver.wait_until_element_present(OptionalFields.SHOW_SSN_FIELD_IN_PERSONAL_DETAILS)
+        self.selenium_driver.wait_until_element_present(OptionalFields.SHOW_SIN_FIELD_IN_PERSONAL_DETAILS)
+        self.selenium_driver.wait_until_element_present(OptionalFields.SHOW_US_TAX_EXEMPTIONS_MENU)
+        self.selenium_driver.wait_until_element_present(OptionalFields.SAVE)
+
+    def wait_for_custom_fields_to_load(self, is_landing=True):
+        if is_landing:
+            self.selenium_driver.element_click(self.CONFIGURATION)
+            self.selenium_driver.wait_until_element_present(CustomFields.CUSTOM_FIELDS)
+            self.selenium_driver.element_click(CustomFields.CUSTOM_FIELDS)
+        self.selenium_driver.wait_until_element_present(CustomFields.ADD_FIELDS)
+
+    def wait_for_add_custom_fields_to_load(self, is_add=True):
+        if is_add:
+            self.selenium_driver.element_click(CustomFields.ADD_FIELDS)
+        self.selenium_driver.wait_until_element_present(AddCustomFields.FIELD_NAME)
+        self.selenium_driver.wait_until_element_present(AddCustomFields.TYPE)
+        self.selenium_driver.wait_until_element_present(AddCustomFields.SCREEN)
+        self.selenium_driver.wait_until_element_present(AddCustomFields.SUBMIT)
+        self.selenium_driver.wait_until_element_present(AddCustomFields.CANCEL)
+
+    def wait_for_edit_custom_fields_to_save(self, custom_field=''):
+        if custom_field:
+            self.selenium_driver.element_click(CustomFields.CUSTOM_FIELDS)
+            self.selenium_driver.wait_until_element_present(EditCustomFields.FIELD_NAME)
+            self.selenium_driver.wait_until_element_present(EditCustomFields.SCREEN)
+            self.selenium_driver.wait_until_element_present(EditCustomFields.SELECT_OPTIONS)
+            self.selenium_driver.wait_until_element_present(AddCustomFields.CANCEL)
+            self.selenium_driver.wait_until_element_present(AddCustomFields.SUBMIT)
+
+    def wait_for_data_import_to_load(self, is_landing=True):
+        if is_landing:
+            self.selenium_driver.element_click(self.CONFIGURATION)
+            self.selenium_driver.wait_until_element_visible(DataImport.DATA_IMPORT)
+            self.selenium_driver.element_click(DataImport.DATA_IMPORT)
+        self.selenium_driver.wait_until_element_present(DataImport.SELECT_FILE)
+        self.selenium_driver.wait_until_element_present(DataImport.DOWNLOAD_SAMPLE_CSV)
+        self.selenium_driver.wait_until_element_present(DataImport.UPLOAD)

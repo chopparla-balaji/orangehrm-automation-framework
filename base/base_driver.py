@@ -29,7 +29,7 @@ class BaseDriver(ABC):
         ...
 
     @abstractmethod
-    def execute_script(self, script:str) -> None:
+    def execute_script(self, script:str, web_element:WebElement=None) -> None:
         ...
 
     @abstractmethod

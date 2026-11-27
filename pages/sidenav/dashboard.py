@@ -51,7 +51,7 @@ class Dashboard:
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def validate_dashboard(self) -> None:
+    def wait_for_dashboard_to_load(self) -> None:
         self.selenium_driver.wait_until_element_present(CommonPage.SIDE_NAV_INDICATOR)
         self.selenium_driver.wait_until_element_present(CommonPage.USER_DROP_DOWN)
         self.selenium_driver.wait_until_element_present(self.TIME_AT_WORK)

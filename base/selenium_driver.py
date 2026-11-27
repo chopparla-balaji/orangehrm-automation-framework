@@ -38,8 +38,11 @@ class SeleniumDriver(BaseDriver):
     def get_text(self, locator:tuple[str,str]) -> str:
         return self.find_element(locator).text
 
-    def execute_script(self, script:str) -> None:
-        self.driver.execute_script(script)
+    def execute_script(self, script:str, web_element:WebElement=None) -> None:
+        if web_element:
+            self.driver.execute_script(script, web_element)
+        else:
+            self.driver.execute_script(script)
 
     def validate_page_title(self) -> None:
         assert self.driver.title == PAGE_TITLE

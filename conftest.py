@@ -44,7 +44,7 @@ def login_in(selenium_driver):
     login_page.enter_credentials()
     login_page.selenium_driver.element_click(login_page.LOGIN_BTN)
     dashboard = Dashboard(selenium_driver)
-    dashboard.validate_dashboard()
+    dashboard.wait_for_dashboard_to_load()
 
 @pytest.fixture(scope="function")
 def log_out(selenium_driver):

@@ -1,6 +1,7 @@
 from typing import Final
 from utils.type_checker import Locator
 from selenium.webdriver.common.by import By
+from base.selenium_driver import SeleniumDriver
 
 
 class EmployeeTrackers:
@@ -25,3 +26,31 @@ class EmployeeReviews:
     TO_DATE:Final[Locator] = (By.XPATH, "(//form/descendant::input)[3]")
     RESET: Final[Locator] = (By.XPATH, "//button[@type='reset']")
     SEARCH: Final[Locator] = (By.XPATH, "//button[@type='submit']")
+
+class EmployeePerformance:
+
+    def __init__(self, selenium_driver: SeleniumDriver):
+        self.selenium_driver = selenium_driver
+
+    def wait_for_employee_reviewers_to_load(self, is_landing_page: bool=True):
+        if is_landing_page:
+            self.selenium_driver.element_click(EmployeeReviews.MANAGE_REVIEWS)
+            self.selenium_driver.wait_until_element_visible(EmployeeReviews.EMPLOYEE_REVIEWS)
+            self.selenium_driver.element_click(EmployeeReviews.EMPLOYEE_REVIEWS)
+        self.selenium_driver.wait_until_element_present(EmployeeReviews.EMPLOYEE_NAME)
+        self.selenium_driver.wait_until_element_present(EmployeeReviews.JOB_TITLE)
+        self.selenium_driver.wait_until_element_present(EmployeeReviews.SUB_UNIT)
+        self.selenium_driver.wait_until_element_present(EmployeeReviews.INCLUDE)
+        self.selenium_driver.wait_until_element_present(EmployeeReviews.REVIEW_STATUS)
+        self.selenium_driver.wait_until_element_present(EmployeeReviews.FROM_DATE)
+        self.selenium_driver.wait_until_element_present(EmployeeReviews.TO_DATE)
+        self.selenium_driver.wait_until_element_present(EmployeeReviews.RESET)
+        self.selenium_driver.wait_until_element_present(EmployeeReviews.SEARCH)
+
+    def wait_for_employee_trackers_to_load(self, is_landing_page: bool=True):
+        if is_landing_page:
+            self.selenium_driver.element_click(EmployeeTrackers.EMPLOYEE_TRACKER)
+        self.selenium_driver.wait_until_element_present(EmployeeTrackers.EMPLOYEE_NAME)
+        self.selenium_driver.wait_until_element_present(EmployeeTrackers.INCLUDE)
+        self.selenium_driver.wait_until_element_present(EmployeeTrackers.RESET)
+        self.selenium_driver.wait_until_element_present(EmployeeTrackers.SEARCH)

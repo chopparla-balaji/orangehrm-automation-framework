@@ -28,3 +28,16 @@ class EmployeeList:
 
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
+
+    def wait_for_employee_list_to_load(self, is_landing:bool = True) -> None:
+        if is_landing:
+            self.selenium_driver.element_click(self.EMPLOYEE_LIST)
+        self.selenium_driver.wait_until_element_present(self.EMPLOYEE_NAME)
+        self.selenium_driver.wait_until_element_present(self.EMPLOYEE_ID)
+        self.selenium_driver.wait_until_element_present(self.EMPLOYMENT_STATUS)
+        self.selenium_driver.wait_until_element_present(self.INCLUDE)
+        self.selenium_driver.wait_until_element_present(self.SUPERVISOR_NAME)
+        self.selenium_driver.wait_until_element_present(self.JOB_TITLE)
+        self.selenium_driver.wait_until_element_present(self.SUB_UNIT)
+        self.selenium_driver.wait_until_element_present(self.RESET)
+        self.selenium_driver.wait_until_element_present(self.SEARCH)

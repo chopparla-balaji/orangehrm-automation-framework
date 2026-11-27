@@ -13,5 +13,5 @@ class SideNav:
     MY_INFO: Final[Locator] = (By.XPATH, "//nav[@role='navigation']/descendant::ul[1]/descendant::li[6]/child::a")
     PERFORMANCE: Final[Locator] = (By.XPATH, "//nav[@role='navigation']/descendant::ul[1]/descendant::li[7]/child::a")
     DASHBOARD: Final[Locator] = (By.XPATH, "//nav[@role='navigation']/descendant::ul[1]/descendant::li[8]/child::a")
-    CLAIM: Final[Locator] = (By.XPATH, "//nav[@role='navigation']/descendant::ul[1]/descendant::li[9]/child::a")
-    BUZZ: Final[Locator] = (By.XPATH, "//nav[@role='navigation']/descendant::ul[1]/descendant::li[10]/child::a")
+    CLAIM: Final[Locator] = (By.XPATH, "//nav[@role='navigation']/descendant::ul[1]/descendant::li[11]/child::a")
+    BUZZ: Final[Locator] = (By.XPATH, "//nav[@role='navigation']/descendant::ul[1]/descendant::li[12]/child::a")
