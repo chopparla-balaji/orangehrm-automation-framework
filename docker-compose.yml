@@ -1,6 +1,4 @@
 services:
-
-  # ── PostgreSQL Database ──────────────────
   healenium-db:
     image: postgres:14
     container_name: healenium-db
@@ -10,93 +8,23 @@ services:
       POSTGRES_PASSWORD: healenium_pass
     ports:
       - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U healenium_user"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - healenium-network
-    restart: on-failure
-
-  # ── Healenium Backend ────────────────────
   healenium-backend:
-    image: healenium/hlm-backend:4.0.0
+    image: healenium/hlm-backend:3.5.1
     container_name: healenium-backend
     depends_on:
-      healenium-db:
-        condition: service_healthy
+      - healenium-db
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://healenium-db:5432/healenium
       SPRING_DATASOURCE_USERNAME: healenium_user
       SPRING_DATASOURCE_PASSWORD: healenium_pass
-      SERVER_PORT: 7878
     ports:
       - "7878:7878"
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:7878/api/health"]
-      interval: 20s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
-    networks:
-      - healenium-network
-    restart: on-failure
-
-  # ── Healenium Proxy ──────────────────────
   healenium-proxy:
-    image: healenium/hlm-proxy:3.1.0
+    image: healenium/hlm-proxy:3.0.6
     container_name: healenium-proxy
     depends_on:
-      healenium-backend:
-        condition: service_healthy
+      - healenium-backend
     environment:
-      HLM_BACKEND_URL: http://healenium-backend:7878
-      HLM_AUTO_HEALING: "true"
-      HLM_REPORT_PATH: /reports
+      HEALENIUM_BACKEND_URL: http://localhost:7878
     ports:
       - "8085:8085"
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8085/health"]
-      interval: 20s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
-    networks:
-      - healenium-network
-    restart: on-failure
-
-  # ── Jenkins CI/CD ────────────────────────
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      JENKINS_OPTS: "--httpPort=8080"
-    depends_on:
-      healenium-proxy:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080"]
-      interval: 20s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
-    networks:
-      - healenium-network
-    restart: on-failure
-
-volumes:
-  postgres_data:
-  jenkins_home:
-
-networks:
-  healenium-network:
-    driver: bridge
