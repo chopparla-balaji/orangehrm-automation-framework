@@ -11,7 +11,7 @@ NO_SANDBOX = "--sandbox"
 DISABLE_DEV_SHM_USAGE = "--disable-dev-shm-usage"
 
 # Command Line Arguments [conftest]
-BROWSER_CL ="--browser_new"
+BROWSER_TYPE_CL = "--browser_type"
 IS_PARALLEL_CL = "--is_parallel"
 IS_NORMAL_DRIVER_CL = "--is_normal_driver"
 

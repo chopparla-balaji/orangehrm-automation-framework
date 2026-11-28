@@ -1,6 +1,6 @@
 from typing import Final
 from utils.type_checker import Locator
-from pages.common_page import CommonPage
+from pages.dashboard import Dashboard
 from selenium.webdriver.common.by import By
 from base.selenium_driver import SeleniumDriver
 
@@ -16,8 +16,13 @@ class UserMenu:
         self.selenium_driver = selenium_driver
 
     def logout_orm(self) -> None:
-        self.selenium_driver.element_click(CommonPage.USER_DROP_DOWN)
-        self.selenium_driver.wait_until_element_present(self.ABOUT)
-        self.selenium_driver.wait_until_element_present(self.CHANGE_PASSWORD)
-        self.selenium_driver.wait_until_element_present(self.LOGOUT)
+        self.wait_for_user_menu_to_load()
         self.selenium_driver.element_click(self.LOGOUT)
+
+    def wait_for_user_menu_to_load(self, is_landing:bool = True) -> None:
+        if is_landing:
+            self.selenium_driver.element_click(Dashboard.USER_DROP_DOWN)
+        self.selenium_driver.wait_until_element_clickable(self.ABOUT)
+        self.selenium_driver.wait_until_element_clickable(self.SUPPORT)
+        self.selenium_driver.wait_until_element_clickable(self.CHANGE_PASSWORD)
+        self.selenium_driver.wait_until_element_clickable(self.LOGOUT)

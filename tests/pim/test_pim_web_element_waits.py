@@ -1,4 +1,4 @@
-from pages.sidenav.sidenav import SideNav
+from pages.sidenav_page import SideNav
 from pages.sidenav.pim.add_employee import AddEmployee
 from pages.sidenav.pim.employee_list import EmployeeList
 from pages.sidenav.pim.reports import ManageReports

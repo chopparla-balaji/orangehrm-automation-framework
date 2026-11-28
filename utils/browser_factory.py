@@ -23,11 +23,11 @@ def browser_init(browser_name=FIREFOX, is_heal=False):
     options.add_argument(WINDOW_SIZE)
     options.add_argument(DISABLE_NOTIFICATIONS)
     if browser_name in (CHROME, EDGE):
-        # options.add_argument(HEADLESS_NEW)
+        options.add_argument(HEADLESS_NEW)
         options.add_argument(NO_SANDBOX)
         options.add_argument(DISABLE_DEV_SHM_USAGE)
-    # else:
-    #     options.add_argument(HEADLESS)
+    else:
+        options.add_argument(HEADLESS)
     if is_heal:
         return webdriver.Remote(
             command_executor=HEALENIUM_URL,

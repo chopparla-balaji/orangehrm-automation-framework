@@ -1,23 +1,23 @@
 import pytest
 from pages.login_page import LoginPage
-from pages.sidenav.dashboard import Dashboard
+from pages.dashboard import Dashboard
 from pages.usermenu import UserMenu
 from base.selenium_driver import SeleniumDriver
-from utils.constants import (BROWSER_CL, IS_PARALLEL_CL, IS_NORMAL_DRIVER_CL, BROWSER, IS_PARALLEL, IS_NORMAL_DRIVER,
+from utils.constants import (BROWSER_TYPE_CL, IS_PARALLEL_CL, IS_NORMAL_DRIVER_CL, BROWSER, IS_PARALLEL, IS_NORMAL_DRIVER,
                              FIREFOX, CHROME, EDGE, TRUE_STR, FALSE_STR, STORE)
 
 from fixtures.fixtures import normal_driver, heal_driver, thread_driver, thread_heal_driver
 # pytest_plugins = ["fixtures.fixtures.normal_driver", "", ""] [Alternative way to load fixtures from other modules]
 
 def pytest_addoption(parser):
-    parser.addoption(BROWSER_CL, action=STORE, choices=(CHROME, FIREFOX,EDGE), default=FIREFOX)
+    parser.addoption(BROWSER_TYPE_CL, action=STORE, choices=(CHROME, FIREFOX, EDGE), default=FIREFOX)
     parser.addoption(IS_NORMAL_DRIVER_CL, action=STORE, default=FALSE_STR, choices=(TRUE_STR, FALSE_STR))
     parser.addoption(IS_PARALLEL_CL, action=STORE, default=FALSE_STR, choices=(TRUE_STR, FALSE_STR))
 
 @pytest.fixture(scope="session")
 def cross_browser(request):
     return {
-            BROWSER: request.config.getoption(BROWSER_CL),
+            BROWSER: request.config.getoption(BROWSER_TYPE_CL),
             IS_NORMAL_DRIVER: request.config.getoption(IS_NORMAL_DRIVER_CL) == TRUE_STR,
             IS_PARALLEL: request.config.getoption(IS_PARALLEL_CL) == TRUE_STR,
             }

@@ -2,8 +2,6 @@ from typing import Final
 from utils.type_checker import Locator
 from selenium.webdriver.common.by import By
 from base.selenium_driver import SeleniumDriver
-from pages.sidenav.sidenav import SideNav
-from utils.utils import format_locator_text
 from utils.constants import USER_NAME, ROLE, NAME, STATUS, EMPTY_SEARCH_RESULT
 
 
@@ -13,9 +11,9 @@ class SystemUsers:
     USER_ROLE: Final[Locator] = (By.XPATH, "//div[@tabIndex='0']/ancestor::div[2]")
     EMPLOYEE_NAME: Final[Locator] = (By.XPATH, "//form/descendant::input[2]")
     STATUS: Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[2]/ancestor::div[2]")
-    RESET: Final[Locator] = (By.XPATH, "//button[@type='button']")
-    SEARCH: Final[Locator] = (By.XPATH, "//button[@type='submit']")
-    ADD_USER: Final[Locator] = (By.XPATH, "(//button[@type='button'])[2]")
+    RESET: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='button']")
+    SEARCH: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
+    ADD_USER: Final[Locator] = (By.XPATH, "//form/following::button[@type='button']")
     REC_ALL_CHX: Final[Locator] = (By.XPATH, "//div[@role='columnheader']/descendant::span[1]")
     DELETE_SELECT: Final[Locator] = (By.XPATH, "//div[@role='columnheader']/preceding::button[@type='button'][1]")
     DELETE_ACTION: Locator = (By.XPATH, "//div[normalize-space()='{username}']/following::button[@type='button'][1]")
@@ -25,25 +23,27 @@ class SystemUsers:
     CLOSE_DIALOG: Final[Locator] = (By.XPATH, "//div[@role='dialog']/descendant::button[1]")
     ROW_GROUP: Final[Locator] = (By.XPATH, "(//div[@role='rowgroup'])[2]")
 
+    USER_MANAGE_HEADER: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[1]")
+    USER: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[1]/"
+                                      "descendant::ul[1]/descendant::li[1]")
+
     # Option Value
     OPT_VAL: Locator = (By.XPATH, "//*[normalize-space()='{option}']/parent::div[@role='option']")
 
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def landing_user_management(self) -> None:
-        self.selenium_driver.wait_until_element_present(SideNav.ADMIN)
-        self.selenium_driver.wait_until_element_present(SideNav.DASHBOARD)
-        self.selenium_driver.element_click(SideNav.ADMIN)
-        self.validate_system_user()
-
-    def validate_system_user(self) -> None:
+    def wait_for_system_user_to_load(self, is_landing=False) -> None:
+        if not is_landing:
+            self.selenium_driver.element_click(self.USER_MANAGE_HEADER)
+            self.selenium_driver.wait_until_element_clickable(self.USER)
+            self.selenium_driver.element_click(self.USER)
         self.selenium_driver.wait_until_element_present(self.USERNAME)
-        self.selenium_driver.wait_until_element_present(self.USER_ROLE)
+        self.selenium_driver.wait_until_element_visible(self.USER_ROLE)
         self.selenium_driver.wait_until_element_present(self.EMPLOYEE_NAME)
-        self.selenium_driver.wait_until_element_present(self.STATUS)
-        self.selenium_driver.wait_until_element_present(self.RESET)
-        self.selenium_driver.wait_until_element_present(self.SEARCH)
+        self.selenium_driver.wait_until_element_visible(self.STATUS)
+        self.selenium_driver.wait_until_element_clickable(self.RESET)
+        self.selenium_driver.wait_until_element_clickable(self.SEARCH)
         self.selenium_driver.validate_page_title()
 
     def wait_delete_confirmation_dialog(self, is_open: bool=True) -> None:

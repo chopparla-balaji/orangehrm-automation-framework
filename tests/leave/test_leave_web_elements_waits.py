@@ -1,4 +1,4 @@
-from pages.sidenav.sidenav import SideNav
+from pages.sidenav_page import SideNav
 from pages.sidenav.leave.assign_leave import AssignLeave
 from pages.sidenav.leave.configures import Configures
 

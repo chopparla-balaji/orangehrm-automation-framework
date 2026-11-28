@@ -1,12 +1,12 @@
-from pages.sidenav.sidenav import SideNav
-from pages.sidenav.time import ManageTime
+from pages.sidenav_page import SideNav
+from pages.sidenav.time_sheet import ManageTime
 
-class TestTimeWebElementWaits:
+class TestTimeSheetWebElementWaits:
 
     def test_login(self, login_in):
         ...
 
-    def test_waits_for_time_web_elements_load(self, selenium_driver):
+    def test_waits_for_time_sheet_web_elements_to_load(self, selenium_driver):
         manage_time = ManageTime(selenium_driver)
         manage_time.selenium_driver.element_click(SideNav.TIME)
         manage_time.wait_for_time_sheet_to_load()

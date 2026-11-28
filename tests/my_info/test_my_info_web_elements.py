@@ -1,4 +1,4 @@
-from pages.sidenav.sidenav import SideNav
+from pages.sidenav_page import SideNav
 from pages.sidenav.my_info.personal_details import PersonalDetails
 from pages.sidenav.my_info.contact_details import ContactDetails
 

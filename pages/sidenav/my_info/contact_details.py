@@ -16,7 +16,7 @@ class ContactDetails:
     WORK: Final[Locator] = (By.XPATH, "(//form/descendant::input)[8]")
     WORK_EMAIL: Final[Locator] = (By.XPATH, "(//form/descendant::input)[9]")
     OTHER_EMAIL: Final[Locator] = (By.XPATH, "(//form/descendant::input)[10]")
-    SAVE: Final[Locator] = (By.XPATH, "//button[@type='submit']")
+    SAVE: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
 
     CONTACT_DETAILS:Final[Locator] = (By.XPATH, "//div[@role='tablist']/div[2]/a")
 
@@ -31,10 +31,10 @@ class ContactDetails:
         self.selenium_driver.wait_until_element_present(self.CITY)
         self.selenium_driver.wait_until_element_present(self.STATE_PROVINCE)
         self.selenium_driver.wait_until_element_present(self.ZIP_POSTAL_CODE)
-        self.selenium_driver.wait_until_element_present(self.COUNTRY)
+        self.selenium_driver.wait_until_element_visible(self.COUNTRY)
         self.selenium_driver.wait_until_element_present(self.HOME)
         self.selenium_driver.wait_until_element_present(self.MOBILE)
         self.selenium_driver.wait_until_element_present(self.WORK)
         self.selenium_driver.wait_until_element_present(self.WORK_EMAIL)
         self.selenium_driver.wait_until_element_present(self.OTHER_EMAIL)
-        self.selenium_driver.wait_until_element_present(self.SAVE)
+        self.selenium_driver.wait_until_element_clickable(self.SAVE)

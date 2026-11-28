@@ -18,5 +18,5 @@ class ResetPassword:
         if is_landing_page:
             login_page.selenium_driver.element_click(login_page.FORGOT_YOUR_PASSWORD)
         self.selenium_driver.wait_until_element_present(self.USERNAME)
-        self.selenium_driver.wait_until_element_present(self.RESET_PASSWORD)
-        self.selenium_driver.wait_until_element_present(self.CANCEL)
+        self.selenium_driver.wait_until_element_clickable(self.CANCEL)
+        self.selenium_driver.wait_until_element_clickable(self.RESET_PASSWORD)

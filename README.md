@@ -46,6 +46,16 @@ allure serve allure-results
 
 ---
 
+## Key Features
+
+- **Page Object Model** - Organized page classes for maintainability
+- **Multi-language Support** - Attribute-based XPaths (not text-dependent)
+- **Self-Healing** - Automatic locator recovery with Healenium
+- **Parallel Execution** - Thread-safe fixtures for running tests in parallel
+- **Docker Integration** - Pre-configured Healenium stack
+
+---
+
 ## Prerequisites
 
 - **Python 3.11+**
@@ -60,56 +70,38 @@ allure serve allure-results
 
 ```
 orangehrm-automation-framework/
-├── base/                          # Base classes for driver and page objects
-│   ├── base_driver.py            # Base driver class with common methods
-│   └── selenium_driver.py        # Selenium WebDriver implementation
-│
-├── pages/                         # Page Object Model (POM) classes
-│   ├── common_page.py            # Common methods used across pages
-│   ├── login_page.py             # Login page object
-│   ├── usermenu.py               # User menu page object
-│   ├── sidenav/                  # Side navigation pages
-│   │   ├── dashboard.py          # Dashboard page
-│   │   ├── sidenav.py            # Main sidenav component
-│   │   └── admin/                # Admin section pages
-│   │       ├── system_users.py   # System users management
-│   │       └── user_management.py # User management page
-│   └── ...
-│
-├── tests/                         # Test cases
-│   ├── conftest.py               # Pytest configuration and fixtures
-│   ├── sample_test.py            # Sample test examples
-│   ├── user_management_test.py   # User management tests
-│   └── ...
-│
-├── fixtures/                      # Test fixtures
-│   └── fixtures.py               # Reusable test fixtures
-│
-├── utils/                         # Utility modules
-│   ├── browser_factory.py        # Browser initialization factory
-│   ├── constants.py              # Application constants
-│   ├── page_titles.py            # Page titles reference
-│   ├── testdata.py               # Test data management
-│   └── type_checker.py           # Type checking utilities
-│
-├── docker-compose.yml            # Docker services configuration
-├── requirements.txt              # Python dependencies (Selenium, pytest, Healenium, etc.)
-├── pytest.ini                    # Pytest configuration
-├── conftest.py                   # Global pytest configuration
-├── README.md                     # This file (documentation)
-├── .gitignore                    # Git ignore rules (excludes __pycache__, .env, test reports, etc.)
-└── .env.example                  # Example environment variables (copy to .env)
+├── base/                 # Abstract base driver (Selenium WebDriver)
+│   ├── base_driver.py    # Abstract class with common methods
+│   └── selenium_driver.py # Concrete implementation
+├── pages/                # Page Objects (final + type checked)
+│   ├── login_page.py
+│   ├── dashboard.py
+│   ├── change_password.py
+│   ├── reset_password.py
+│   ├── usermenu.py
+│   ├── sidenav_page.py
+│   └── sidenav/
+│       ├── admin/, claim.py, performance.py, recruitment.py, time_sheet.py
+│       └── leave/, my_info/, pim/
+├── tests/                # Test Cases
+│   ├── test_sample.py
+│   └── admin/, claim/, leave/, my_info/, password/, performance/, pim/, recruitment/, time_sheet/
+├── fixtures/             # Fixtures (normal, thread-safe, Healenium)
+│   └── fixtures.py       # normal_driver, heal_driver, thread_driver, thread_heal_driver
+├── utils/                # Utilities
+│   ├── browser_factory.py # Browser init (Chrome/Firefox/Edge, Healenium support)
+│   ├── constants.py
+│   ├── page_titles.py
+│   ├── testdata.py
+│   ├── type_checker.py
+│   └── utils.py
+├── docker-compose.yml
+├── requirements.txt
+├── conftest.py           # CLI options, selenium_driver, login_in, log_out fixtures
+├── README.md
+├── .gitignore
+└── .env.example
 ```
-
-### **Key Directory Descriptions:**
-
-| Directory | Purpose |
-|-----------|---------|
-| `base/` | Base classes with Selenium WebDriver initialization and common methods |
-| `pages/` | Page Objects following POM pattern for each application page |
-| `tests/` | Test scripts organized by feature/module |
-| `fixtures/` | Reusable test fixtures and setup/teardown logic |
-| `utils/` | Helper utilities for constants, test data, and browser management |
 
 ---
 
@@ -178,7 +170,7 @@ HEALENIUM_PROXY_URL = "http://localhost:8085"
 pytest tests/
 
 # Run specific test file
-pytest tests/system_user_search_test.py
+pytest tests/test_admin_web_elements_waits.py
 
 # Run with verbose output
 pytest tests/ -v
@@ -211,48 +203,42 @@ Healenium Dashboard: http://localhost:8085
 
 ## Running Tests
 
-### **Local Execution**
+### **Local Execution (Normal Selenium Driver)**
 
 ```bash
-# Simple test run
-pytest tests/
+# Run full test suite against live demo
+python -m pytest --is_normal_driver true --browser_type chrome -v
 
-# With detailed output
-pytest tests/ -v -s
+# Run specific test module
+python -m pytest tests/admin/test_admin_web_elements_waits.py --is_normal_driver true --browser_type chrome -v
 
-# With specific test
-pytest tests/system_user_search_test.py::test_create_user -v
+# Run with detailed output
+python -m pytest tests/ --is_normal_driver true --browser_type chrome -v -s
 
 # Generate HTML report
-pytest tests/ --html=report.html --self-contained-html
+python -m pytest tests/ --html=report.html --self-contained-html
 ```
 
-### **Test Organization**
+### **Running Tests with Healenium (Self-Healing)**
 
-Tests are organized using:
-- **Test files:** `*_test.py` pattern in `tests/` directory
-- **Test classes:** Group related tests
-- **Test methods:** `test_*` naming convention
-- **Fixtures:** Defined in `conftest.py`
+```bash
+# Start Docker services first
+docker-compose up -d
 
-### **Example Test Structure**
+# Run tests with Healenium (default driver)
+python -m pytest tests/ --is_normal_driver false -v
 
-```python
-class TestUserManagement:
-    def test_create_user(self, driver):
-        # Setup
-        login_page = LoginPage(driver)
-        
-        # Execute
-        login_page.login("admin", "password")
-        user_mgmt = UserManagementPage(driver)
-        user_mgmt.create_user("John Doe", "john@example.com")
-        
-        # Assert
-        assert user_mgmt.is_user_created("John Doe")
+# Tests will auto-heal broken XPaths via http://localhost:8085
 ```
 
----
+### **Command-Line Options**
+
+| Option | Values | Default | Purpose |
+|--------|--------|---------|---------|
+| `--browser_type` | `chrome`, `firefox`, `edge` | `firefox` | Browser to use for testing |
+| `--is_normal_driver` | `true`, `false` | `false` | Use Selenium (true) or Healenium (false) |
+| `--is_parallel` | `true`, `false` | `false` | Run tests in parallel with xdist |
+
 
 ## Docker Services (Healenium Stack)
 
@@ -320,7 +306,7 @@ PostgreSQL:           localhost:5432
 # Start services in background
 docker-compose up -d
 
-# View real-time logs
+# View real-time_sheet logs
 docker-compose logs -f
 
 # View logs for specific service
@@ -391,77 +377,6 @@ docker-compose pull
 docker-compose up -d
 ```
 
-### **Jenkins Integration with Healenium**
-
-1. Access Jenkins: http://localhost:8080
-2. Create new Pipeline job
-3. Add pipeline script:
-   ```groovy
-   pipeline {
-       agent any
-       stages {
-           stage('Run Tests with Healenium') {
-               steps {
-                   sh '''
-                   pip install -r requirements.txt
-                   pytest tests/ -v --html=report.html --junitxml=results.xml
-                   '''
-               }
-           }
-       }
-       post {
-           always {
-               publishHTML([
-                   reportDir: '.',
-                   reportFiles: 'report.html',
-                   reportName: 'Test Report'
-               ])
-           }
-       }
-   }
-   ```
-4. Schedule builds for automated testing
-
----
-
-## Configuration
-
-### **Environment Variables**
-
-Create `.env` file in project root:
-
-```env
-BASE_URL=http://localhost:8080
-BROWSER=chrome
-HEADLESS=true
-TIMEOUT=10
-HEALENIUM_ENABLED=true
-HEALENIUM_PROXY=http://localhost:8085
-```
-
-### **Page Titles Reference**
-
-Defined in `utils/page_titles.py`:
-
-```python
-DASHBOARD_TITLE = "Dashboard"
-LOGIN_TITLE = "Login"
-USER_MANAGEMENT_TITLE = "User Management"
-```
-
-### **Test Data**
-
-Manage test data in `utils/testdata.py`:
-
-```python
-TEST_USERS = {
-    "admin": {"username": "admin", "password": "admin123"},
-    "user": {"username": "user", "password": "user123"}
-}
-```
-
----
-
 ## Architecture
 
 ### **Page Object Model (POM)**
@@ -518,5 +433,5 @@ For issues or contributions, please open a GitHub issue or submit a pull request
 
 ---
 
-**Last Updated:** 2026-11-25
+**Last Updated:** 2026-11-28
 

@@ -14,8 +14,8 @@ class UserManagement:
     STATUS: Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[2]/ancestor::div[2]")
     PASSWORD: Final[Locator] = (By.XPATH, "(//input[@type='password' and @autocomplete='off'])[1]")
     CONFIRM_PASSWORD: Final[Locator] = (By.XPATH, "(//input[@type='password' and @autocomplete='off'])[2]")
-    CANCEL: Final[Locator] = (By.XPATH, "//button[@type='button']")
-    SAVE: Final[Locator] = (By.XPATH, "//button[@type='submit']")
+    CANCEL: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='button']")
+    SAVE: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
 
     # Option Value
     OPT_VAL: Locator = (By.XPATH, "//span[normalize-space()='{option}']/parent::div[@role='option']")
@@ -32,18 +32,18 @@ class UserManagement:
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def validate_user_management(self, is_add: bool = True) -> None:
+    def wait_for_add_users_to_load(self, is_add: bool = True) -> None:
         if is_add:
-            self.selenium_driver.wait_until_element_present(self.ADD_USER_HEADING)
+            self.selenium_driver.element_click(SystemUsers.ADD_USER)
         self.selenium_driver.wait_until_element_present(self.USERNAME)
-        self.selenium_driver.wait_until_element_present(self.USER_ROLE)
-        self.selenium_driver.wait_until_element_present(self.STATUS)
+        self.selenium_driver.wait_until_element_visible(self.USER_ROLE)
+        self.selenium_driver.wait_until_element_visible(self.STATUS)
         self.selenium_driver.wait_until_element_present(self.EMPLOYEE_NAME)
         if is_add:
             self.selenium_driver.wait_until_element_present(self.PASSWORD)
             self.selenium_driver.wait_until_element_present(self.CONFIRM_PASSWORD)
-        self.selenium_driver.wait_until_element_present(self.CANCEL)
-        self.selenium_driver.wait_until_element_present(self.SAVE)
+        self.selenium_driver.wait_until_element_clickable(self.CANCEL)
+        self.selenium_driver.wait_until_element_clickable(self.SAVE)
         self.selenium_driver.validate_page_title()
 
     def add_user(self, user_details: dict[str, str]) -> None:
@@ -56,7 +56,7 @@ class UserManagement:
             update_action = (user_manage.UPDATE_ACTION[0], user_manage.UPDATE_ACTION[1]
                              .format(username=user_details[USER_NAME]))
             user_manage.selenium_driver.element_click(update_action)
-            self.validate_user_management(False)
+            self.wait_for_add_users_to_load(False)
             self.user_management(user_details, False, is_change_password)
         else:
             raise KeyError("Missing required fields of username")
@@ -67,14 +67,14 @@ class UserManagement:
         user_manage.selenium_driver.window_scroll(1400)
         user_manage.selenium_driver.element_click(delete_action)
         user_manage.selenium_driver.wait_until_element_visible(user_manage.NO_CANCEL_USER)
-        user_manage.selenium_driver.wait_until_element_visible(user_manage.DELETE_USER)
+        user_manage.selenium_driver.wait_until_element_clickable(user_manage.DELETE_USER)
         user_manage.selenium_driver.element_click(user_manage.DELETE_USER)
         user_manage.selenium_driver.wait_until_element_in_visible(user_manage.NO_CANCEL_USER)
         user_manage.selenium_driver.wait_until_element_in_visible(user_manage.DELETE_USER)
         self.selenium_driver.wait_until_element_visible(self.SUC_MSG_HEADING, 40)
         self.selenium_driver.wait_until_element_visible(self.DELETE_USER_MSG, 40)
         user_manage.selenium_driver.window_scroll(-1400)
-        user_manage.validate_system_user()
+        user_manage.wait_for_system_user_to_load()
 
     def user_management(self, manage_user_details: dict[str, str], is_add: bool = True,
                         is_change_password: bool = False) -> None:
@@ -100,7 +100,7 @@ class UserManagement:
                 self.selenium_driver.wait_until_element_visible(self.ADD_USER_MSG, 40)
             else:
                 self.selenium_driver.wait_until_element_visible(self.UPDATE_USER_MSG, 40)
-            user_manage.validate_system_user()
+            user_manage.wait_for_system_user_to_load()
             delete_action = (user_manage.DELETE_ACTION[0], user_manage.DELETE_ACTION[1]
                              .format(username=manage_user_details[USER_NAME]))
             update_action = (user_manage.UPDATE_ACTION[0], user_manage.UPDATE_ACTION[1]

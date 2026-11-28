@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 
 class SideNav:
 
+    SIDE_NAV_INDICATOR: Final[Locator] = (By.XPATH, "//nav/descendant::button[@type='button'][@role='none']")
     SEARCH: Final[Locator] = (By.XPATH, "//nav[@role='navigation']/descendant::input[1]")
     ADMIN: Final[Locator] = (By.XPATH, "//nav[@role='navigation']/descendant::ul[1]/descendant::li[1]/child::a")
     PIM: Final[Locator] = (By.XPATH, "//nav[@role='navigation']/descendant::ul[1]/descendant::li[2]/child::a")

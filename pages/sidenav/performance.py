@@ -9,8 +9,8 @@ class EmployeeTrackers:
     EMPLOYEE_NAME: Final[Locator] = (By.XPATH, "(//form/descendant::input)[1]")
     INCLUDE:Final[Locator] = (By.XPATH, "//div[@tabIndex='0']/ancestor::div[2]")
     EMPLOYEE_TRACKER: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[4]")
-    RESET: Final[Locator] = (By.XPATH, "//button[@type='reset']")
-    SEARCH: Final[Locator] = (By.XPATH, "//button[@type='submit']")
+    RESET: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='reset']")
+    SEARCH_EMP_TRACKER: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
 
 class EmployeeReviews:
 
@@ -24,8 +24,8 @@ class EmployeeReviews:
     REVIEW_STATUS:Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[4]/ancestor::div[2]")
     FROM_DATE:Final[Locator] = (By.XPATH, "(//form/descendant::input)[2]")
     TO_DATE:Final[Locator] = (By.XPATH, "(//form/descendant::input)[3]")
-    RESET: Final[Locator] = (By.XPATH, "//button[@type='reset']")
-    SEARCH: Final[Locator] = (By.XPATH, "//button[@type='submit']")
+    RESET: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='reset']")
+    SEARCH_EMP_REVIEW: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
 
 class EmployeePerformance:
 
@@ -38,19 +38,19 @@ class EmployeePerformance:
             self.selenium_driver.wait_until_element_visible(EmployeeReviews.EMPLOYEE_REVIEWS)
             self.selenium_driver.element_click(EmployeeReviews.EMPLOYEE_REVIEWS)
         self.selenium_driver.wait_until_element_present(EmployeeReviews.EMPLOYEE_NAME)
-        self.selenium_driver.wait_until_element_present(EmployeeReviews.JOB_TITLE)
-        self.selenium_driver.wait_until_element_present(EmployeeReviews.SUB_UNIT)
-        self.selenium_driver.wait_until_element_present(EmployeeReviews.INCLUDE)
-        self.selenium_driver.wait_until_element_present(EmployeeReviews.REVIEW_STATUS)
+        self.selenium_driver.wait_until_element_visible(EmployeeReviews.JOB_TITLE)
+        self.selenium_driver.wait_until_element_visible(EmployeeReviews.SUB_UNIT)
+        self.selenium_driver.wait_until_element_visible(EmployeeReviews.INCLUDE)
+        self.selenium_driver.wait_until_element_visible(EmployeeReviews.REVIEW_STATUS)
         self.selenium_driver.wait_until_element_present(EmployeeReviews.FROM_DATE)
         self.selenium_driver.wait_until_element_present(EmployeeReviews.TO_DATE)
-        self.selenium_driver.wait_until_element_present(EmployeeReviews.RESET)
-        self.selenium_driver.wait_until_element_present(EmployeeReviews.SEARCH)
+        self.selenium_driver.wait_until_element_clickable(EmployeeReviews.RESET)
+        self.selenium_driver.wait_until_element_clickable(EmployeeReviews.SEARCH_EMP_REVIEW)
 
     def wait_for_employee_trackers_to_load(self, is_landing_page: bool=True):
         if is_landing_page:
             self.selenium_driver.element_click(EmployeeTrackers.EMPLOYEE_TRACKER)
         self.selenium_driver.wait_until_element_present(EmployeeTrackers.EMPLOYEE_NAME)
-        self.selenium_driver.wait_until_element_present(EmployeeTrackers.INCLUDE)
-        self.selenium_driver.wait_until_element_present(EmployeeTrackers.RESET)
-        self.selenium_driver.wait_until_element_present(EmployeeTrackers.SEARCH)
+        self.selenium_driver.wait_until_element_visible(EmployeeTrackers.INCLUDE)
+        self.selenium_driver.wait_until_element_clickable(EmployeeTrackers.RESET)
+        self.selenium_driver.wait_until_element_clickable(EmployeeTrackers.SEARCH_EMP_TRACKER)

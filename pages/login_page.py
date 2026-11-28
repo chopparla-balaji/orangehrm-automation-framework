@@ -9,8 +9,8 @@ class LoginPage:
 
     USERNAME: Final[Locator] = (By.NAME, "username")
     PASSWORD: Final[Locator] = (By.NAME, "password")
-    LOGIN_BTN: Final[Locator] = (By.XPATH, "//button[@type='submit']")
-    FORGOT_YOUR_PASSWORD: Final[Locator] = (By.XPATH, "//button[@type='submit']/following::p[1]")
+    LOGIN_BTN: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
+    FORGOT_YOUR_PASSWORD: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']/following::p[1]")
     ORANGE_HRM_INC: Final[Locator] = (By.LINK_TEXT, "OrangeHRM, Inc")
 
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
@@ -27,4 +27,6 @@ class LoginPage:
     def validate_login_page(self) -> None:
         self.selenium_driver.wait_until_element_present(self.USERNAME)
         self.selenium_driver.wait_until_element_present(self.PASSWORD)
+        self.selenium_driver.wait_until_element_clickable(self.LOGIN_BTN)
+        self.selenium_driver.wait_until_element_clickable(self.FORGOT_YOUR_PASSWORD)
         self.selenium_driver.validate_page_title()

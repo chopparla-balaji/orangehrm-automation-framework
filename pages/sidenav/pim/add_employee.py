@@ -11,8 +11,8 @@ class AddEmployee:
     EMPLOYEE_LAST_NAME: Final[Locator] = (By.CSS_SELECTOR, "input[name='lastName'][placeholder='Last Name']")
     EMPLOYEE_ID: Final[Locator] = (By.XPATH, "(//form/descendant::input)[5]")
     CREATE_LOGIN_DETAILS: Final[Locator] = (By.XPATH, "//input[@type='checkbox']/parent::label")
-    CANCEL: Final[Locator] = (By.XPATH, "//button[@type='button']")
-    SAVE: Final[Locator] = (By.XPATH, "//button[@type='submit']")
+    CANCEL: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='button']")
+    SAVE: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
     USERNAME: Final[Locator] = (By.XPATH, "(//form/descendant::input)[7]")
     ENABLED: Final[Locator] = (By.XPATH, "(//form/descendant::input)[8]/parent::label")
     DISABLED: Final[Locator] = (By.XPATH, "(//form/descendant::input)[9]/parent::label")
@@ -33,8 +33,8 @@ class AddEmployee:
         if is_create_details:
             script = "arguments[0].click();"
             self.selenium_driver.execute_script(script, self.selenium_driver.find_element(AddEmployee.CREATE_LOGIN_DETAILS))
-            self.selenium_driver.wait_until_element_present(self.CANCEL)
-            self.selenium_driver.wait_until_element_present(self.SAVE)
+            self.selenium_driver.wait_until_element_clickable(self.CANCEL)
+            self.selenium_driver.wait_until_element_clickable(self.SAVE)
             self.selenium_driver.wait_until_element_present(self.USERNAME)
             self.selenium_driver.wait_until_element_visible(self.ENABLED)
             self.selenium_driver.wait_until_element_visible(self.DISABLED)

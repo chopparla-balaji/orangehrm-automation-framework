@@ -15,8 +15,8 @@ class Candidates:
     DATE_OF_APPLICATION_TO: Final[Locator] = (By.XPATH, "(//form/descendant::input)[4]")
     METHOD_OF_APPLICATION: Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[5]/ancestor::div[2]")
     RESET: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='reset']")
-    SEARCH: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
-    ADD: Final[Locator] = (By.XPATH, "//form/following::button[@type='button']")
+    SEARCH_CANDIDATE: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
+    ADD_CANDIDATE: Final[Locator] = (By.XPATH, "//form/following::button[@type='button']")
 
 class AddCandidates:
 
@@ -31,7 +31,7 @@ class AddCandidates:
     DATE_OF_APPLICATION: Final[Locator] = (By.XPATH, "(//form/descendant::input)[8]")
     NOTES: Final[Locator] = (By.TAG_NAME, "textarea")
     CONSENT_TO_KEEP_DATA: Final[Locator] = (By.XPATH, "//input[@type='checkbox']/following::span[1]")
-    CANCEL: Final[Locator] = (By.XPATH, "(//form/descendant::button[@type='button'])[1]")
+    CANCEL: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='button']")
     SAVE: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
 
 class ManageRecruitment:
@@ -40,27 +40,27 @@ class ManageRecruitment:
         self.selenium_driver = selenium_driver
 
     def wait_for_candidates_to_load(self):
-        self.selenium_driver.wait_until_element_present(Candidates.JOB_TITLE)
-        self.selenium_driver.wait_until_element_present(Candidates.VACANCY)
-        self.selenium_driver.wait_until_element_present(Candidates.HIRING_MANAGER)
-        self.selenium_driver.wait_until_element_present(Candidates.STATUS)
+        self.selenium_driver.wait_until_element_visible(Candidates.JOB_TITLE)
+        self.selenium_driver.wait_until_element_visible(Candidates.VACANCY)
+        self.selenium_driver.wait_until_element_visible(Candidates.HIRING_MANAGER)
+        self.selenium_driver.wait_until_element_visible(Candidates.STATUS)
         self.selenium_driver.wait_until_element_present(Candidates.CANDIDATE_NAME)
         self.selenium_driver.wait_until_element_present(Candidates.KEYWORDS)
         self.selenium_driver.wait_until_element_present(Candidates.DATE_OF_APPLICATION_FROM)
         self.selenium_driver.wait_until_element_present(Candidates.DATE_OF_APPLICATION_TO)
-        self.selenium_driver.wait_until_element_present(Candidates.METHOD_OF_APPLICATION)
+        self.selenium_driver.wait_until_element_visible(Candidates.METHOD_OF_APPLICATION)
         self.selenium_driver.wait_until_element_present(Candidates.RESET)
-        self.selenium_driver.wait_until_element_present(Candidates.SEARCH)
-        self.selenium_driver.wait_until_element_present(Candidates.ADD)
+        self.selenium_driver.wait_until_element_clickable(Candidates.SEARCH_CANDIDATE)
+        self.selenium_driver.wait_until_element_clickable(Candidates.ADD_CANDIDATE)
 
     def wait_for_add_page_candidates_to_load(self, is_add: bool= True):
         if is_add:
             self.selenium_driver.window_scroll(360)
-            self.selenium_driver.element_click(Candidates.ADD)
+            self.selenium_driver.element_click(Candidates.ADD_CANDIDATE)
             self.selenium_driver.wait_until_element_present(AddCandidates.CANDIDATE_FIRST_NAME)
             self.selenium_driver.wait_until_element_present(AddCandidates.CANDIDATE_MIDDLE_NAME)
             self.selenium_driver.wait_until_element_present(AddCandidates.CANDIDATE_LAST_NAME)
-            self.selenium_driver.wait_until_element_present(AddCandidates.VACANCY)
+            self.selenium_driver.wait_until_element_visible(AddCandidates.VACANCY)
             self.selenium_driver.wait_until_element_present(AddCandidates.EMAIL)
             self.selenium_driver.wait_until_element_present(AddCandidates.CONTACT_NUMBER)
             self.selenium_driver.wait_until_element_present(AddCandidates.RESUME)
@@ -68,7 +68,7 @@ class ManageRecruitment:
             self.selenium_driver.wait_until_element_present(AddCandidates.DATE_OF_APPLICATION)
             self.selenium_driver.wait_until_element_present(AddCandidates.NOTES)
             self.selenium_driver.wait_until_element_present(AddCandidates.CONSENT_TO_KEEP_DATA)
-            self.selenium_driver.wait_until_element_present(AddCandidates.CANCEL)
-            self.selenium_driver.wait_until_element_present(AddCandidates.SAVE)
+            self.selenium_driver.wait_until_element_clickable(AddCandidates.CANCEL)
+            self.selenium_driver.wait_until_element_clickable(AddCandidates.SAVE)
         else:
             self.wait_for_candidates_to_load()

@@ -14,7 +14,7 @@ class WorkWeek:
     FRIDAY : Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[5]/ancestor::div[2]")
     SATURDAY : Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[6]/ancestor::div[2]")
     SUNDAY : Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[7]/ancestor::div[2]")
-    SAVE: Final[Locator] = (By.XPATH, "//button[@type='submit']")
+    SAVE: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
 
 class LeavePeriod:
 
@@ -22,8 +22,8 @@ class LeavePeriod:
                                            "descendant::ul[1]/descendant::li[1]")
     START_MONTH: Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[1]/ancestor::div[2]")
     START_DATE: Final[Locator] = (By.XPATH, "(//div[@tabIndex='0'])[2]/ancestor::div[2]")
-    RESET: Final[Locator] = (By.XPATH, "//button[@type='button']")
-    SAVE: Final[Locator] = (By.XPATH, "//button[@type='submit']")
+    RESET: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='button']")
+    SAVE: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
 
 class Configures:
 
@@ -43,8 +43,8 @@ class Configures:
         self.selenium_driver.wait_until_element_visible(WorkWeek.WEDNESDAY)
         self.selenium_driver.wait_until_element_visible(WorkWeek.THURSDAY)
         self.selenium_driver.wait_until_element_visible(WorkWeek.FRIDAY)
-        self.selenium_driver.wait_until_element_visible(WorkWeek.SATURDAY)
-        self.selenium_driver.wait_until_element_visible(WorkWeek.SAVE)
+        self.selenium_driver.wait_until_element_clickable(WorkWeek.SATURDAY)
+        self.selenium_driver.wait_until_element_clickable(WorkWeek.SAVE)
 
     def wait_for_leave_period_to_load(self, is_landing=True):
         if is_landing:
@@ -53,6 +53,6 @@ class Configures:
             self.selenium_driver.element_click(LeavePeriod.LEAVE_PERIOD)
         self.selenium_driver.wait_until_element_visible(LeavePeriod.START_MONTH)
         self.selenium_driver.wait_until_element_visible(LeavePeriod.START_DATE)
-        self.selenium_driver.wait_until_element_visible(LeavePeriod.RESET)
-        self.selenium_driver.wait_until_element_visible(LeavePeriod.SAVE)
+        self.selenium_driver.wait_until_element_clickable(LeavePeriod.RESET)
+        self.selenium_driver.wait_until_element_clickable(LeavePeriod.SAVE)
 
