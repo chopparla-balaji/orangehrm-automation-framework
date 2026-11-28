@@ -17,9 +17,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - healenium-network
+    restart: on-failure
 
   # ── Healenium Backend ────────────────────
-  # Note: If 4.0.0 fails, try using 'latest' tag
   healenium-backend:
     image: healenium/hlm-backend:4.0.0
     container_name: healenium-backend
@@ -34,15 +36,18 @@ services:
     ports:
       - "7878:7878"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7878/health"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:7878/api/health"]
+      interval: 20s
+      timeout: 10s
       retries: 5
+      start_period: 40s
+    networks:
+      - healenium-network
+    restart: on-failure
 
   # ── Healenium Proxy ──────────────────────
-  # Note: If 2.2.1 fails, try using 'latest' tag
   healenium-proxy:
-    image: healenium/hlm-proxy:2.2.1
+    image: healenium/hlm-proxy:3.1.0
     container_name: healenium-proxy
     depends_on:
       healenium-backend:
@@ -54,10 +59,14 @@ services:
     ports:
       - "8085:8085"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8085/health"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8085/health"]
+      interval: 20s
+      timeout: 10s
       retries: 5
+      start_period: 40s
+    networks:
+      - healenium-network
+    restart: on-failure
 
   # ── Jenkins CI/CD ────────────────────────
   jenkins:
@@ -72,13 +81,22 @@ services:
     environment:
       JENKINS_OPTS: "--httpPort=8080"
     depends_on:
-      - healenium-proxy
+      healenium-proxy:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 15s
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080"]
+      interval: 20s
       timeout: 10s
       retries: 5
+      start_period: 60s
+    networks:
+      - healenium-network
+    restart: on-failure
 
 volumes:
   postgres_data:
   jenkins_home:
+
+networks:
+  healenium-network:
+    driver: bridge
