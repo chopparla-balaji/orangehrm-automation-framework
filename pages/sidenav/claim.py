@@ -35,10 +35,10 @@ class EmployeeClaims:
 
 class ManageClaims:
 
-    def __init__(self, selenium_driver: SeleniumDriver):
+    def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def wait_for_employee_claims_to_load(self):
+    def wait_for_employee_claims_to_load(self) -> None:
         self.selenium_driver.wait_until_element_present(EmployeeClaims.EMPLOYEE_NAME)
         self.selenium_driver.wait_until_element_present(EmployeeClaims.REFERENCE_ID)
         self.selenium_driver.wait_until_element_visible(MyClaims.EVENT_NAME)
@@ -48,7 +48,7 @@ class ManageClaims:
         self.selenium_driver.wait_until_element_clickable(MyClaims.RESET)
         self.selenium_driver.wait_until_element_clickable(MyClaims.SEARCH_CLAIMS)
 
-    def wait_for_assign_claims_to_load(self, is_assign_claim=True):
+    def wait_for_assign_claims_to_load(self, is_assign_claim=True) -> None:
         if is_assign_claim:
             self.selenium_driver.element_click(AssignClaim.ASSIGN_CLAIM_HEADER)
         self.selenium_driver.wait_until_element_visible(AssignClaim.EVENT)
@@ -57,7 +57,7 @@ class ManageClaims:
         self.selenium_driver.wait_until_element_clickable(AssignClaim.CANCEL)
         self.selenium_driver.wait_until_element_clickable(AssignClaim.CREATE_CLAIM)
 
-    def wait_for_my_claims_to_load(self, is_my_claim=True):
+    def wait_for_my_claims_to_load(self, is_my_claim=True) -> None:
         if is_my_claim:
             self.selenium_driver.element_click(MyClaims.MY_CLAIMS)
         self.selenium_driver.wait_until_element_present(MyClaims.REFERENCE_ID)

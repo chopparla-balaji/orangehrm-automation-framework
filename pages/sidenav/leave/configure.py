@@ -29,10 +29,10 @@ class Configures:
 
     CONFIGURE: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[5]")
 
-    def __init__(self, selenium_driver: SeleniumDriver):
+    def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def wait_for_work_week_to_load(self, is_landing=True):
+    def wait_for_work_week_to_load(self, is_landing=True) -> None:
         if is_landing:
             self.selenium_driver.element_click(self.CONFIGURE)
             self.selenium_driver.wait_until_element_clickable(WorkWeek.WORK_WEEK)
@@ -46,7 +46,7 @@ class Configures:
         self.selenium_driver.wait_until_element_clickable(WorkWeek.SATURDAY)
         self.selenium_driver.wait_until_element_clickable(WorkWeek.SAVE)
 
-    def wait_for_leave_period_to_load(self, is_landing=True):
+    def wait_for_leave_period_to_load(self, is_landing=True) -> None:
         if is_landing:
             self.selenium_driver.element_click(self.CONFIGURE)
             self.selenium_driver.wait_until_element_clickable(LeavePeriod.LEAVE_PERIOD)

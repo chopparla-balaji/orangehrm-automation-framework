@@ -34,7 +34,7 @@ class PersonalDetails:
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def wait_for_personal_details_to_load(self, is_personal_details: bool = True):
+    def wait_for_personal_details_to_load(self, is_personal_details: bool = True) -> None:
         if is_personal_details:
             self.selenium_driver.element_click(self.PERSONAL_DETAILS)
         self.selenium_driver.wait_until_element_present(self.EMPLOYEE_FIRST_NAME)

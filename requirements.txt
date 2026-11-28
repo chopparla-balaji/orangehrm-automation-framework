@@ -1,50 +1,6 @@
-# Core Selenium & Testing
 selenium==4.15.2
 pytest==7.4.3
-pytest-html==4.1.1
 pytest-xdist==3.5.0
-
-# Allure Reports
+pytest-html==4.1.1
 allure-pytest==2.13.2
-
-# Self-Healing (Healenium)
-selenium-healenium==0.3.6
-
-# Web Utilities
-requests==2.31.0
-urllib3==2.1.0
-
-# Data Management & Utilities
-python-dotenv==1.0.0
-pyyaml==6.0.1
-
-# Logging & Monitoring
-loguru==0.7.2
-
-# Type Checking
-typing-extensions==4.8.0
-
-# Code Quality (Optional but recommended)
-pylint==3.0.3
-flake8==6.1.0
-black==23.12.0
-isort==5.13.2
-
-# Browser Automation Helpers
-webdriver-manager==4.0.1
-
-# Testing Data Fixtures
-faker==20.1.0
-
-# Performance Testing
-locust==2.17.0
-
-# API Testing (if needed)
-pytest-mock==3.12.0
-responses==0.24.1
-
-# Environment & Config
-python-dateutil==2.8.2
-
-# Reporting
-pytest-json-report==1.5.0
+faker==40.63.0

@@ -11,7 +11,7 @@ from utils.constants import IMPLICIT_WAIT, EXPLICIT_WAIT, VISIBLE_TEXT, VALUE, I
 
 class SeleniumDriver(BaseDriver):
 
-    def __init__(self, driver):
+    def __init__(self, driver) -> None:
         self.driver = driver
 
     def open_url(self, url:str) -> None:
@@ -19,13 +19,11 @@ class SeleniumDriver(BaseDriver):
 
     def find_element(self, locator:tuple[str,str]) -> WebElement:
         self.implicit_wait()
-        web_element = self.driver.find_element(*locator)
-        return web_element
+        return self.driver.find_element(*locator)
 
     def find_elements(self, locator:tuple[str,str]) -> list[WebElement]:
         self.implicit_wait()
-        web_elements = self.driver.find_elements(*locator)
-        return web_elements
+        return self.driver.find_elements(*locator)
 
     def send_keys(self, locator:tuple[str,str], value:str | int) -> None:
         web_element = self.find_element(locator)
@@ -55,7 +53,7 @@ class SeleniumDriver(BaseDriver):
         web_element = self.find_element(locator)
         self.driver.execute_script("arguments[0].scrollIntoView(true)", web_element)
 
-    def implicit_wait(self, timeout=IMPLICIT_WAIT):
+    def implicit_wait(self, timeout=IMPLICIT_WAIT) -> None:
         self.driver.implicitly_wait(timeout)
 
     def upload_file(self, locator:tuple[str,str], file:str) -> None:
@@ -79,8 +77,7 @@ class SeleniumDriver(BaseDriver):
     def select_option_element(self, locator:tuple[str,str], value:str | int, timeout=EXPLICIT_WAIT) -> None:
         opt_value = (locator[0], locator[1].format(option=value))
         self.wait_until_element_visible(opt_value, timeout=timeout)
-        web_element = self.find_element(opt_value)
-        web_element.click()
+        self.find_element(opt_value).click()
 
     def wait_until_element_clickable(self, locator:tuple[str,str], timeout=EXPLICIT_WAIT) -> None:
         self.web_driver_wait(ec.element_to_be_clickable(locator), timeout)
@@ -98,5 +95,4 @@ class SeleniumDriver(BaseDriver):
         self.web_driver_wait(ec.frame_to_be_available_and_switch_to_it(locator), timeout)
 
     def web_driver_wait(self, expected_condition:Callable, timeout=EXPLICIT_WAIT) -> None:
-        web_driver_wait = WebDriverWait(self.driver, timeout)
-        web_driver_wait.until(expected_condition)
+        WebDriverWait(self.driver, timeout).until(expected_condition)

@@ -20,9 +20,6 @@ class Reports:
     RESET: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='button']")
     SEARCH_REPORTS: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
     ADD_REPORTS: Final[Locator] = (By.XPATH, "//form/following::button[@type='button'][1]")
-
-    DELETE_REPORT: Final[Locator] = (By.XPATH, "//div[normalize-space()='{username}']/following::button[@type='button'][1]")
-    EDIT_REPORT: Final[Locator] = (By.XPATH, "//div[normalize-space()='{username}']/following::button[@type='button'][2]")
     REPORTS_HEADER: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[4]")
 
 class EditReports:
@@ -37,7 +34,7 @@ class ManageReports:
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def wait_for_reports_to_load(self, is_landing=True):
+    def wait_for_reports_to_load(self, is_landing=True) -> None:
         if is_landing:
             self.selenium_driver.element_click(self.REPORT_HEADER)
         self.selenium_driver.wait_until_element_present(Reports.REPORT_NAME)
@@ -45,7 +42,7 @@ class ManageReports:
         self.selenium_driver.wait_until_element_clickable(Reports.SEARCH_REPORTS)
         self.selenium_driver.wait_until_element_clickable(Reports.ADD_REPORTS)
 
-    def wait_for_add_report_to_load(self, is_add=True):
+    def wait_for_add_report_to_load(self, is_add=True) -> None:
         if is_add:
             self.selenium_driver.element_click(Reports.ADD_REPORTS)
         self.selenium_driver.wait_until_element_present(AddReports.REPORT_NAME)
@@ -56,7 +53,7 @@ class ManageReports:
         self.selenium_driver.wait_until_element_clickable(AddReports.CANCEL)
         self.selenium_driver.wait_until_element_clickable(AddReports.SAVE)
 
-    def wait_for_edit_report_to_load(self, report_name:str=''):
+    def wait_for_edit_report_to_load(self, report_name:str='') -> None:
         if report_name:
             self.selenium_driver.wait_until_element_present(Reports.REPORT_NAME)
             self.wait_for_add_report_to_load()

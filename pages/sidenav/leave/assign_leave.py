@@ -23,10 +23,10 @@ class AssignLeave:
     COMMENTS : Final[Locator] = (By.TAG_NAME, "textarea")
     ASSIGN_LEAVE: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
 
-    def __init__(self, selenium_driver: SeleniumDriver):
+    def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def wait_for_assign_leave_to_load(self, is_landing=True):
+    def wait_for_assign_leave_to_load(self, is_landing=True) -> None:
         if is_landing:
             self.selenium_driver.element_click(self.ASSIGN_LEAVE_HEADER)
         self.selenium_driver.wait_until_element_present(self.EMPLOYEE_NAME)
@@ -36,7 +36,7 @@ class AssignLeave:
         self.selenium_driver.wait_until_element_present(self.COMMENTS)
         self.selenium_driver.wait_until_element_clickable(self.ASSIGN_LEAVE)
 
-    def wait_for_leave_list_to_load(self):
+    def wait_for_leave_list_to_load(self) -> None:
         self.selenium_driver.wait_until_element_present(LeaveList.FROM_DATE)
         self.selenium_driver.wait_until_element_present(LeaveList.TO_DATE)
         self.selenium_driver.wait_until_element_visible(LeaveList.SHOW_LEAVE_WITH_STATUS)

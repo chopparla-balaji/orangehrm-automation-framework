@@ -1,9 +1,9 @@
 # OrangeHRM Automation Framework
 
-Enterprise-grade Selenium 4 test automation with self-healing locators, POM architecture, and CI/CD pipeline — built for real-world HR workflows.
+Enterprise-grade Selenium 4 test automation with self-healing locators, POM architecture, and CI/CD pipeline - built for real-world HR workflows.
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)
-![Selenium](https://img.shields.io/badge/Selenium-4.0-43B02A?style=flat-square&logo=selenium&logoColor=white)
+![Selenium](https://img.shields.io/badge/Selenium-4.15-43B02A?style=flat-square&logo=selenium&logoColor=white)
 ![Pytest](https://img.shields.io/badge/Pytest-latest-0A9EDC?style=flat-square&logo=pytest&logoColor=white)
 ![Healenium](https://img.shields.io/badge/Healenium-SelfHealing-blueviolet?style=flat-square)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
@@ -17,10 +17,10 @@ Enterprise-grade Selenium 4 test automation with self-healing locators, POM arch
 - [Quick Start](#quick-start)
 - [Prerequisites](#prerequisites)
 - [Project Structure](#project-structure)
-- [End-to-End Setup Steps](#end-to-end-setup-steps)
+- [Setup](#setup)
 - [Running Tests](#running-tests)
 - [Docker Services](#docker-services)
-- [Configuration](#configuration)
+- [CI/CD](#cicd)
 
 ---
 
@@ -78,7 +78,7 @@ orangehrm-automation-framework/
 │   ├── dashboard.py
 │   ├── change_password.py
 │   ├── reset_password.py
-│   ├── usermenu.py
+│   ├── user_menu.py
 │   ├── sidenav_page.py
 │   └── sidenav/
 │       ├── admin/, claim.py, performance.py, recruitment.py, time_sheet.py
@@ -94,7 +94,8 @@ orangehrm-automation-framework/
 │   ├── page_titles.py
 │   ├── testdata.py
 │   ├── type_checker.py
-│   └── utils.py
+│   ├── shared_resources.py
+│   └── ui_helpers.py
 ├── docker-compose.yml
 ├── requirements.txt
 ├── conftest.py           # CLI options, selenium_driver, login_in, log_out fixtures
@@ -105,331 +106,148 @@ orangehrm-automation-framework/
 
 ---
 
-## End-to-End Setup Steps
+## Setup
 
-### **Step 1: Clone & Setup Project**
+### **1. Clone Repository & Install Dependencies**
 
 ```bash
-# Clone the repository
 git clone <repository-url>
 cd orangehrm-automation-framework
 
-# Create virtual environment (recommended)
+# Create virtual environment
 python -m venv venv
 
-# Activate virtual environment
-# On Windows:
+# Activate (Windows)
 venv\Scripts\activate
-# On macOS/Linux:
+# Or (macOS/Linux)
 source venv/bin/activate
-```
 
-### **Step 2: Install Dependencies**
-
-```bash
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### **Step 3: Start Docker Services**
+### **2. Start Docker Services (Optional - for Healenium)**
 
 ```bash
-# Pull all required Docker images
 docker-compose pull
-
-# Start all services in background
 docker-compose up -d
-
-# Verify services are running
-docker ps
+docker-compose ps
 ```
 
-**Services Started:**
-- PostgreSQL (Port 5432) - Database for Healenium
-- Healenium Backend (Port 7878) - Self-healing backend
-- Healenium Proxy (Port 8085) - Self-healing proxy
-- Jenkins (Port 8080) - CI/CD automation
-
-### **Step 4: Configure Test Environment**
-
-Update configuration in `utils/constants.py`:
-
-```python
-# Browser configuration
-BASE_URL = "http://localhost:8080"  # OrangeHRM URL
-BROWSER_TYPE = "chrome"  # or "firefox"
-
-# Healenium configuration (optional)
-USE_HEALENIUM = True
-HEALENIUM_PROXY_URL = "http://localhost:8085"
-```
-
-### **Step 5: Run Tests Locally**
-
-```bash
-# Run all tests
-pytest tests/
-
-# Run specific test file
-pytest tests/test_admin_web_elements_waits.py
-
-# Run with verbose output
-pytest tests/ -v
-
-# Run with markers
-pytest tests/ -m "login"
-
-# Run with Healenium self-healing
-pytest tests/ --healenium
-```
-
-### **Step 6: Generate Reports**
-
-```bash
-# Generate Allure report
-pytest tests/ --alluredir=allure-results
-
-# View report
-allure serve allure-results
-```
-
-### **Step 7: Access Jenkins (Optional)**
-
-```
-Jenkins Dashboard: http://localhost:8080
-Healenium Dashboard: http://localhost:8085
-```
+Services running:
+- PostgreSQL 14 (Port 5432)
+- Healenium Backend (Port 7878)
+- Healenium Proxy (Port 8085)
 
 ---
 
 ## Running Tests
 
-### **Local Execution (Normal Selenium Driver)**
+### **Normal Driver (Public Demo - Sequential)**
 
 ```bash
-# Run full test suite against live demo
-python -m pytest --is_normal_driver true --browser_type chrome -v
+# Run all tests
+python -m pytest tests/ --is_normal_driver true --browser_type chrome -v
 
-# Run specific test module
+# Run specific test
 python -m pytest tests/admin/test_admin_web_elements_waits.py --is_normal_driver true --browser_type chrome -v
 
-# Run with detailed output
-python -m pytest tests/ --is_normal_driver true --browser_type chrome -v -s
-
 # Generate HTML report
-python -m pytest tests/ --html=report.html --self-contained-html
+python -m pytest tests/ --is_normal_driver true --browser_type chrome --html=report.html
 ```
 
-### **Running Tests with Healenium (Self-Healing)**
+### **Healenium Driver (Self-Healing)**
 
 ```bash
-# Start Docker services first
+# Start Docker services
 docker-compose up -d
 
-# Run tests with Healenium (default driver)
-python -m pytest tests/ --is_normal_driver false -v
-
-# Tests will auto-heal broken XPaths via http://localhost:8085
+# Run with Healenium
+python -m pytest tests/ --is_normal_driver false --browser_type chrome -v
 ```
 
-### **Command-Line Options**
+### **Thread Driver (Parallel Execution)**
 
-| Option | Values | Default | Purpose |
-|--------|--------|---------|---------|
-| `--browser_type` | `chrome`, `firefox`, `edge` | `firefox` | Browser to use for testing |
-| `--is_normal_driver` | `true`, `false` | `false` | Use Selenium (true) or Healenium (false) |
-| `--is_parallel` | `true`, `false` | `false` | Run tests in parallel with xdist |
-
-
-## Docker Services (Healenium Stack)
-
-### **Architecture Overview**
-
-This project uses **Healenium Self-Healing Framework** with Docker for:
-- **Auto XPath Healing** - Automatically detects and fixes broken locators
-- **Self-Learning AI** - Improves accuracy with every test run
-- **Centralized Reporting** - Track all healing events and test results
-
-### **Service Details**
-
-| Service | Image | Port | Purpose |
-|---------|-------|------|---------|
-| **PostgreSQL** | postgres:14 | 5432 | Store Healenium metrics & healing data |
-| **Healenium Backend** | healenium/hlm-backend:4.0.2 | 7878 | AI-powered healing engine |
-| **Healenium Proxy** | healenium/hlm-proxy:2.3.0 | 8085 | WebDriver proxy for XPath interception |
-| **Jenkins** | jenkins/jenkins:lts | 8080 | CI/CD pipeline automation |
-
-### **Docker Setup Instructions**
-
-**Prerequisites:**
 ```bash
-# Docker Desktop running
-# Minimum 4GB RAM for Docker
-# 5GB free disk space
+# Run tests in parallel (requires local OrangeHRM instance)
+python -m pytest tests/ --is_normal_driver true --is_parallel true --browser_type chrome -v
 ```
 
-**Step 1: Pull latest images**
-```bash
-docker-compose pull
-```
+### **CLI Arguments**
 
-**Step 2: Start all services**
+| Argument | Values | Default | Purpose |
+|----------|--------|---------|---------|
+| `--browser_type` | `chrome`, `firefox`, `edge` | `firefox` | Browser type |
+| `--is_normal_driver` | `true`, `false` | `false` | Selenium (true) or Healenium (false) |
+| `--is_parallel` | `true`, `false` | `false` | Parallel execution |
+
+---
+
+## Docker Services
+
+### **Services**
+
+| Service | Image | Port | URL |
+|---------|-------|------|-----|
+| PostgreSQL | postgres:14 | 5432 | localhost:5432 |
+| Healenium Backend | healenium/hlm-backend:3.5.1 | 7878 | http://localhost:7878 |
+| Healenium Proxy | healenium/hlm-proxy:3.0.6 | 8085 | http://localhost:8085 |
+
+### **Quick Commands**
+
 ```bash
+# Start all services
 docker-compose up -d
-```
 
-**Step 3: Verify services are running**
-```bash
-docker ps
-
-# Should show 4 containers: healenium-db, healenium-backend, healenium-proxy, jenkins
-```
-
-**Step 4: Wait for services to be ready (~30 seconds)**
-```bash
+# View logs
 docker-compose logs -f
 
-# Wait for messages like "Started" and health checks passing
-```
-
-### **Accessing Services**
-
-```
-Jenkins:              http://localhost:8080
-Healenium UI:         http://localhost:8085
-Healenium API:        http://localhost:8085/api
-PostgreSQL:           localhost:5432
-```
-
-### **Docker Commands**
-
-```bash
-# Start services in background
-docker-compose up -d
-
-# View real-time_sheet logs
-docker-compose logs -f
-
-# View logs for specific service
+# View specific service logs
 docker-compose logs -f healenium-backend
 docker-compose logs -f healenium-proxy
-docker-compose logs -f jenkins
 
-# Stop all services (data persists)
+# Stop all services
 docker-compose down
 
-# Stop and remove all data
+# Stop and remove data
 docker-compose down -v
 
-# Restart specific service
-docker-compose restart healenium-backend
-
-# Check service health status
+# Check status
 docker-compose ps
 
-# View resource usage
-docker stats
+# Wait for services (~60 seconds), then test
+curl http://localhost:7878/health
+curl http://localhost:8085/health
 ```
 
-### **Running Tests with Healenium**
+### **Access Services**
 
-The Healenium Proxy at `localhost:8085` automatically intercepts WebDriver commands:
+| Service | URL | Purpose |
+|---------|-----|---------|
+| Healenium Backend | http://localhost:7878 | Healing engine API |
+| Healenium Proxy | http://localhost:8085 | WebDriver proxy for self-healing |
+| PostgreSQL | localhost:5432 | Database (Healenium storage) |
+
+### **Test Healenium**
+
+After starting Docker services, run tests with Healenium:
 
 ```bash
-# 1. Start Docker services
-docker-compose up -d
-
-# 2. Run tests (they'll auto-heal via proxy)
-pytest tests/ -v
-
-# 3. When an XPath breaks, Healenium automatically:
-#    - Detects the failure
-#    - Suggests alternative selectors using AI
-#    - Applies fix automatically or logs for review
+# Run with Healenium self-healing
+python -m pytest tests/ --is_normal_driver false --browser_type chrome -v
 ```
 
-**Example Test with Self-Healing:**
-
-```python
-# Your tests work normally - Healenium handles healing transparently
-from selenium import webdriver
-
-driver = webdriver.Chrome()
-driver.get("http://target-app.com")
-
-# If this XPath breaks in the app, Healenium heals it automatically:
-element = driver.find_element("xpath", "//button[@id='submit']")
-element.click()
-```
-
-### **Troubleshooting Docker Issues**
-
-```bash
-# If services fail to start:
-docker-compose logs healenium-backend
-
-# If ports are already in use:
-netstat -ano | findstr :7878
-netstat -ano | findstr :8085
-
-# Reset everything:
-docker-compose down -v
-docker-compose pull
-docker-compose up -d
-```
-
-## Architecture
-
-### **Page Object Model (POM)**
-
-Each page has its own class:
-- Encapsulates locators and actions
-- Reusable across test cases
-- Easy maintenance and updates
-
-### **Self-Healing with Healenium**
-
-Automatically detects XPath changes:
-- Reduces test maintenance
-- Improves test stability
-- Logs healing events
-
-### **CI/CD Pipeline**
-
-Jenkins integration for:
-- Automated test execution
-- Scheduled test runs
-- Report generation and distribution
+Healenium will automatically heal broken XPaths via http://localhost:8085
 
 ---
 
-## Troubleshooting
+## CI/CD
 
-### **Docker Issues**
+The deployment pipeline is maintained in a dedicated repository (SCM separation of test code and deployment config):
 
-```bash
-# Docker daemon not running
-# Solution: Start Docker Desktop
+**[orangehrm-automation-deployment](https://github.com/chopparla-balaji/orangehrm-automation-deployment)**
 
-# Image not found
-docker-compose pull
-
-# Port already in use
-docker-compose down -v
-docker-compose up -d
-```
-
-### **Test Failures**
-
-- Check element locators in page objects
-- Verify test data is correct
-- Review browser console logs
-- Check Healenium reports
-
----
-
-## Support & Contributing
-
-For issues or contributions, please open a GitHub issue or submit a pull request.
+The pipeline checks out this framework, installs dependencies, and runs the test suite.
 
 ---
 

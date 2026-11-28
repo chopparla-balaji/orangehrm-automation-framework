@@ -1,7 +1,7 @@
 import pytest
 from pages.login_page import LoginPage
 from pages.dashboard import Dashboard
-from pages.usermenu import UserMenu
+from pages.user_menu import UserMenu
 from base.selenium_driver import SeleniumDriver
 from utils.constants import (BROWSER_TYPE_CL, IS_PARALLEL_CL, IS_NORMAL_DRIVER_CL, BROWSER, IS_PARALLEL, IS_NORMAL_DRIVER,
                              FIREFOX, CHROME, EDGE, TRUE_STR, FALSE_STR, STORE)

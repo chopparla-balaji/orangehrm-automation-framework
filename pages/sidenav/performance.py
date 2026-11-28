@@ -29,10 +29,10 @@ class EmployeeReviews:
 
 class EmployeePerformance:
 
-    def __init__(self, selenium_driver: SeleniumDriver):
+    def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def wait_for_employee_reviewers_to_load(self, is_landing_page: bool=True):
+    def wait_for_employee_reviewers_to_load(self, is_landing_page: bool=True) -> None:
         if is_landing_page:
             self.selenium_driver.element_click(EmployeeReviews.MANAGE_REVIEWS)
             self.selenium_driver.wait_until_element_visible(EmployeeReviews.EMPLOYEE_REVIEWS)
@@ -47,7 +47,7 @@ class EmployeePerformance:
         self.selenium_driver.wait_until_element_clickable(EmployeeReviews.RESET)
         self.selenium_driver.wait_until_element_clickable(EmployeeReviews.SEARCH_EMP_REVIEW)
 
-    def wait_for_employee_trackers_to_load(self, is_landing_page: bool=True):
+    def wait_for_employee_trackers_to_load(self, is_landing_page: bool=True) -> None:
         if is_landing_page:
             self.selenium_driver.element_click(EmployeeTrackers.EMPLOYEE_TRACKER)
         self.selenium_driver.wait_until_element_present(EmployeeTrackers.EMPLOYEE_NAME)

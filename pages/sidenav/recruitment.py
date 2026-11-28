@@ -36,10 +36,10 @@ class AddCandidates:
 
 class ManageRecruitment:
 
-    def __init__(self, selenium_driver: SeleniumDriver):
+    def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def wait_for_candidates_to_load(self):
+    def wait_for_candidates_to_load(self) -> None:
         self.selenium_driver.wait_until_element_visible(Candidates.JOB_TITLE)
         self.selenium_driver.wait_until_element_visible(Candidates.VACANCY)
         self.selenium_driver.wait_until_element_visible(Candidates.HIRING_MANAGER)
@@ -53,7 +53,7 @@ class ManageRecruitment:
         self.selenium_driver.wait_until_element_clickable(Candidates.SEARCH_CANDIDATE)
         self.selenium_driver.wait_until_element_clickable(Candidates.ADD_CANDIDATE)
 
-    def wait_for_add_page_candidates_to_load(self, is_add: bool= True):
+    def wait_for_add_page_candidates_to_load(self, is_add: bool= True) -> None:
         if is_add:
             self.selenium_driver.window_scroll(360)
             self.selenium_driver.element_click(Candidates.ADD_CANDIDATE)

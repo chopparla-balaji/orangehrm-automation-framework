@@ -3,7 +3,7 @@ from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from utils.constants import (WINDOW_SIZE, DISABLE_NOTIFICATIONS, DISABLE_DEV_SHM_USAGE, HEALENIUM_URL, HEADLESS_NEW,
-                             HEADLESS, NO_SANDBOX, CHROME, FIREFOX, EDGE)
+                                        HEADLESS, NO_SANDBOX, CHROME, FIREFOX, EDGE)
 
 
 BROWSER_OPTIONS = {

@@ -2,6 +2,7 @@ from typing import Final
 from selenium.webdriver.common.by import By
 from base.selenium_driver import SeleniumDriver
 from pages.sidenav.admin.system_users import SystemUsers
+from utils.ui_helpers import UiHelpers
 from utils.type_checker import Locator, ADD_USER, EDIT_USER
 from utils.constants import USER_NAME, PASSWORD, CONFIRM_PASSWORD, NAME, ROLE, STATUS
 
@@ -53,28 +54,12 @@ class UserManagement:
         user_manage = SystemUsers(self.selenium_driver)
         user_manage.selenium_driver.window_scroll(1400)
         if USER_NAME in user_details:
-            update_action = (user_manage.UPDATE_ACTION[0], user_manage.UPDATE_ACTION[1]
-                             .format(username=user_details[USER_NAME]))
-            user_manage.selenium_driver.element_click(update_action)
+            user_manage.selenium_driver.element_click(UiHelpers.format_locator_text(
+                user_manage.UPDATE_ACTION,{"username":user_details[USER_NAME]}))
             self.wait_for_add_users_to_load(False)
             self.user_management(user_details, False, is_change_password)
         else:
             raise KeyError("Missing required fields of username")
-
-    def delete_user(self, user_name: str) -> None:
-        user_manage = SystemUsers(self.selenium_driver)
-        delete_action = (user_manage.DELETE_ACTION[0], user_manage.DELETE_ACTION[1].format(username=user_name))
-        user_manage.selenium_driver.window_scroll(1400)
-        user_manage.selenium_driver.element_click(delete_action)
-        user_manage.selenium_driver.wait_until_element_visible(user_manage.NO_CANCEL_USER)
-        user_manage.selenium_driver.wait_until_element_clickable(user_manage.DELETE_USER)
-        user_manage.selenium_driver.element_click(user_manage.DELETE_USER)
-        user_manage.selenium_driver.wait_until_element_in_visible(user_manage.NO_CANCEL_USER)
-        user_manage.selenium_driver.wait_until_element_in_visible(user_manage.DELETE_USER)
-        self.selenium_driver.wait_until_element_visible(self.SUC_MSG_HEADING, 40)
-        self.selenium_driver.wait_until_element_visible(self.DELETE_USER_MSG, 40)
-        user_manage.selenium_driver.window_scroll(-1400)
-        user_manage.wait_for_system_user_to_load()
 
     def user_management(self, manage_user_details: dict[str, str], is_add: bool = True,
                         is_change_password: bool = False) -> None:
@@ -101,13 +86,11 @@ class UserManagement:
             else:
                 self.selenium_driver.wait_until_element_visible(self.UPDATE_USER_MSG, 40)
             user_manage.wait_for_system_user_to_load()
-            delete_action = (user_manage.DELETE_ACTION[0], user_manage.DELETE_ACTION[1]
-                             .format(username=manage_user_details[USER_NAME]))
-            update_action = (user_manage.UPDATE_ACTION[0], user_manage.UPDATE_ACTION[1]
-                             .format(username=manage_user_details[USER_NAME]))
             user_manage.selenium_driver.window_scroll(1400)
-            self.selenium_driver.wait_until_element_present(delete_action)
-            self.selenium_driver.wait_until_element_present(update_action)
+            self.selenium_driver.wait_until_element_present(UiHelpers.format_locator_text(
+                user_manage.DELETE_ACTION,{"username": manage_user_details[USER_NAME]}))
+            self.selenium_driver.wait_until_element_present(UiHelpers.format_locator_text(
+                user_manage.UPDATE_ACTION,{"username": manage_user_details[USER_NAME]}))
         else:
             missing_fields = [key for key in ADD_USER if key not in manage_user_details]
             raise KeyError(f"Missing required fields: {missing_fields}")

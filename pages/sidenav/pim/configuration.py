@@ -17,8 +17,6 @@ class OptionalFields:
 class CustomFields:
 
     ADD_FIELDS: Final[Locator] = (By.XPATH, "//header/following::h6/following::button[@type='button']")
-    DELETE_CUSTOM_FIELD: Final[Locator] = (By.XPATH, "//div[normalize-space()='{field_name}']/following::button[@type='button'][1]")
-    EDIT_CUSTOM_FIELD: Final[Locator] = (By.XPATH, "//div[normalize-space()='{field_name}']/following::button[@type='button'][2]")
     CUSTOM_FIELDS: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[1]/"
                                           "descendant::ul[1]/descendant::li[2]")
 
@@ -52,7 +50,7 @@ class ManageConfiguration:
     def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def wait_for_optional_fields_to_load(self, is_landing=True):
+    def wait_for_optional_fields_to_load(self, is_landing=True) -> None:
         if is_landing:
             self.selenium_driver.element_click(self.CONFIGURATION)
             self.selenium_driver.wait_until_element_visible(OptionalFields.OPTIONAL_FIELDS)
@@ -63,14 +61,14 @@ class ManageConfiguration:
         self.selenium_driver.wait_until_element_visible(OptionalFields.SHOW_US_TAX_EXEMPTIONS_MENU)
         self.selenium_driver.wait_until_element_clickable(OptionalFields.SAVE)
 
-    def wait_for_custom_fields_to_load(self, is_landing=True):
+    def wait_for_custom_fields_to_load(self, is_landing=True) -> None:
         if is_landing:
             self.selenium_driver.element_click(self.CONFIGURATION)
             self.selenium_driver.wait_until_element_present(CustomFields.CUSTOM_FIELDS)
             self.selenium_driver.element_click(CustomFields.CUSTOM_FIELDS)
         self.selenium_driver.wait_until_element_clickable(CustomFields.ADD_FIELDS)
 
-    def wait_for_add_custom_fields_to_load(self, is_add=True):
+    def wait_for_add_custom_fields_to_load(self, is_add=True) -> None:
         if is_add:
             self.selenium_driver.element_click(CustomFields.ADD_FIELDS)
         self.selenium_driver.wait_until_element_present(AddCustomFields.FIELD_NAME)
@@ -79,7 +77,7 @@ class ManageConfiguration:
         self.selenium_driver.wait_until_element_clickable(AddCustomFields.SUBMIT)
         self.selenium_driver.wait_until_element_clickable(AddCustomFields.CANCEL)
 
-    def wait_for_edit_custom_fields_to_save(self, custom_field=''):
+    def wait_for_edit_custom_fields_to_save(self, custom_field='') -> None:
         if custom_field:
             self.selenium_driver.element_click(CustomFields.CUSTOM_FIELDS)
             self.selenium_driver.wait_until_element_present(EditCustomFields.FIELD_NAME)
@@ -88,7 +86,7 @@ class ManageConfiguration:
             self.selenium_driver.wait_until_element_clickable(AddCustomFields.CANCEL)
             self.selenium_driver.wait_until_element_clickable(AddCustomFields.SUBMIT)
 
-    def wait_for_data_import_to_load(self, is_landing=True):
+    def wait_for_data_import_to_load(self, is_landing=True) -> None:
         if is_landing:
             self.selenium_driver.element_click(self.CONFIGURATION)
             self.selenium_driver.wait_until_element_visible(DataImport.DATA_IMPORT)

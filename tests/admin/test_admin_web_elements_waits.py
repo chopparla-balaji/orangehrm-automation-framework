@@ -1,7 +1,7 @@
 import allure
 import pytest
 from pages.login_page import LoginPage
-from pages.usermenu import UserMenu
+from pages.user_menu import UserMenu
 from pages.sidenav.admin.system_users import SystemUsers
 from pages.sidenav.admin.user_management import UserManagement
 from utils.testdata import user_name, password

@@ -9,11 +9,6 @@ class JobTitles:
                                           "descendant::ul[1]/descendant::li[1]")
     REC_ALL_CHX: Final[Locator] = (By.XPATH, "//div[@role='columnheader']/descendant::span[1]")
     DELETE_SELECT: Final[Locator] = (By.XPATH, "//div[@role='columnheader']/preceding::button[@type='button'][1]")
-    DELETE_ACTION: Locator = (By.XPATH, "//div[normalize-space()='{job_title}']/following::button[@type='button'][1]")
-    UPDATE_ACTION: Locator = (By.XPATH, "//div[normalize-space()='{job_title}']/following::button[@type='button'][2]")
-    NO_CANCEL_USER: Final[Locator] = (By.XPATH, "//div[@role='dialog']/descendant::button[@type='button'][1]")
-    DELETE_USER: Final[Locator] = (By.XPATH, "//div[@role='dialog']/descendant::button[@type='button'][2]")
-    CLOSE_DIALOG: Final[Locator] = (By.XPATH, "//div[@role='dialog']/descendant::button[1]")
     JOB_ADD:Final[Locator] = (By.XPATH, "//header/following::h6/following::button[@type='button']")
 
     # Edit Job
@@ -27,8 +22,8 @@ class JobTitles:
 
 class WorkShifts:
 
-    WORK_SHITS: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[2]/"
-                                          "descendant::ul[1]/descendant::li[5]")
+    WORK_SHIFTS_HEADER: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[2]"
+                                                    "/descendant::ul[1]/descendant::li[5]")
     SHIFT_NAME: Final[Locator] = (By.XPATH, "(//form/descendant::input)[1]")
     WORK_FROM: Final[Locator] = (By.XPATH, "(//form/descendant::input)[2]")
     WORK_TO: Final[Locator] = (By.XPATH, "(//form/descendant::input)[3]")
@@ -54,13 +49,13 @@ class ManageJobs:
             self.selenium_driver.wait_until_element_clickable(JobTitles.CANCEL)
             self.selenium_driver.wait_until_element_clickable(JobTitles.SAVE)
 
-    def wait_for_job_work_shits_to_load(self, is_landing:bool=True, is_shit_add:bool=True) -> None:
+    def wait_for_job_work_shifts_to_load(self, is_landing:bool=True, is_shift_add:bool=True) -> None:
         if is_landing:
             self.selenium_driver.element_click(JobTitles.JOB_HEADER)
-            self.selenium_driver.wait_until_element_visible(WorkShifts.WORK_SHITS)
-            self.selenium_driver.element_click(WorkShifts.WORK_SHITS)
+            self.selenium_driver.wait_until_element_visible(WorkShifts.WORK_SHIFTS_HEADER)
+            self.selenium_driver.element_click(WorkShifts.WORK_SHIFTS_HEADER)
         self.selenium_driver.wait_until_element_present(JobTitles.JOB_ADD)
-        if is_shit_add:
+        if is_shift_add:
             self.selenium_driver.element_click(JobTitles.JOB_ADD)
             self.selenium_driver.wait_until_element_present(WorkShifts.SHIFT_NAME)
             self.selenium_driver.wait_until_element_present(WorkShifts.WORK_FROM)

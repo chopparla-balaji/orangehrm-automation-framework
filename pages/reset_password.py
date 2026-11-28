@@ -10,10 +10,10 @@ class ResetPassword:
     CANCEL: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='button']")
     RESET_PASSWORD: Final[Locator] = (By.XPATH, "//form/descendant::button[@type='submit']")
 
-    def __init__(self, selenium_driver: SeleniumDriver):
+    def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def wait_for_reset_password_to_load(self, is_landing_page: bool=True):
+    def wait_for_reset_password_to_load(self, is_landing_page: bool=True) -> None:
         login_page = LoginPage(self.selenium_driver)
         if is_landing_page:
             login_page.selenium_driver.element_click(login_page.FORGOT_YOUR_PASSWORD)

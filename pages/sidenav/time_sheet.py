@@ -40,14 +40,14 @@ class AddCustomers:
 
 class ManageTime:
 
-    def __init__(self, selenium_driver: SeleniumDriver):
+    def __init__(self, selenium_driver: SeleniumDriver) -> None:
         self.selenium_driver = selenium_driver
 
-    def wait_for_time_sheet_to_load(self):
+    def wait_for_time_sheet_to_load(self) -> None:
         self.selenium_driver.wait_until_element_present(EmployeeAttendanceRec.EMPLOYEE_NAME)
         self.selenium_driver.wait_until_element_clickable(EmployeeAttendanceRec.VIEW_ATTEND_REC)
 
-    def wait_for_employee_attendance_rec_to_load(self, is_landing=True):
+    def wait_for_employee_attendance_rec_to_load(self, is_landing=True) -> None:
         if is_landing:
             self.selenium_driver.element_click(EmployeeAttendanceRec.ATTENDANCE)
             self.selenium_driver.wait_until_element_visible(EmployeeAttendanceRec.EMP_RECORDS)
@@ -56,7 +56,7 @@ class ManageTime:
         self.selenium_driver.wait_until_element_present(EmployeeAttendanceRec.DATE)
         self.selenium_driver.wait_until_element_clickable(EmployeeAttendanceRec.VIEW_ATTEND_REC)
 
-    def wait_for_employee_reports_to_load(self, is_landing=True):
+    def wait_for_employee_reports_to_load(self, is_landing=True) -> None:
         if is_landing:
             self.selenium_driver.element_click(EmployeeReports.REPORTS)
             self.selenium_driver.wait_until_element_visible(EmployeeReports.EMP_REPORTS)
@@ -68,7 +68,7 @@ class ManageTime:
         self.selenium_driver.wait_until_element_present(EmployeeReports.PROJECT_DATE_RANGE_TO)
         self.selenium_driver.wait_until_element_clickable(EmployeeReports.VIEW_EMP_REP)
 
-    def wait_for_customers_to_load(self, is_landing=True, is_add_customer=False):
+    def wait_for_customers_to_load(self, is_landing=True, is_add_customer=False) -> None:
         if is_landing:
             self.selenium_driver.element_click(Customers.PROJECT_INFO)
             self.selenium_driver.wait_until_element_visible(Customers.CUSTOMERS)

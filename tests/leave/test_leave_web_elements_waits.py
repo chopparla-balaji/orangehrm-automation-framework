@@ -1,6 +1,6 @@
 from pages.sidenav_page import SideNav
 from pages.sidenav.leave.assign_leave import AssignLeave
-from pages.sidenav.leave.configures import Configures
+from pages.sidenav.leave.configure import Configures
 
 class TestLeaveWebElementsWaits:
 

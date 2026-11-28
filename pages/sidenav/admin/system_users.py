@@ -18,9 +18,6 @@ class SystemUsers:
     DELETE_SELECT: Final[Locator] = (By.XPATH, "//div[@role='columnheader']/preceding::button[@type='button'][1]")
     DELETE_ACTION: Locator = (By.XPATH, "//div[normalize-space()='{username}']/following::button[@type='button'][1]")
     UPDATE_ACTION: Locator = (By.XPATH, "//div[normalize-space()='{username}']/following::button[@type='button'][2]")
-    NO_CANCEL_USER: Final[Locator] = (By.XPATH, "//div[@role='dialog']/descendant::button[@type='button'][1]")
-    DELETE_USER: Final[Locator] = (By.XPATH, "//div[@role='dialog']/descendant::button[@type='button'][2]")
-    CLOSE_DIALOG: Final[Locator] = (By.XPATH, "//div[@role='dialog']/descendant::button[1]")
     ROW_GROUP: Final[Locator] = (By.XPATH, "(//div[@role='rowgroup'])[2]")
 
     USER_MANAGE_HEADER: Final[Locator] = (By.XPATH, "//header/descendant::nav[1]/descendant::ul[1]/descendant::li[1]")
@@ -45,16 +42,6 @@ class SystemUsers:
         self.selenium_driver.wait_until_element_clickable(self.RESET)
         self.selenium_driver.wait_until_element_clickable(self.SEARCH)
         self.selenium_driver.validate_page_title()
-
-    def wait_delete_confirmation_dialog(self, is_open: bool=True) -> None:
-        if is_open:
-            self.selenium_driver.wait_until_element_visible(self.CLOSE_DIALOG)
-            self.selenium_driver.wait_until_element_visible(self.NO_CANCEL_USER)
-            self.selenium_driver.wait_until_element_visible(self.DELETE_USER)
-        else:
-            self.selenium_driver.wait_until_element_in_visible(self.CLOSE_DIALOG)
-            self.selenium_driver.wait_until_element_in_visible(self.NO_CANCEL_USER)
-            self.selenium_driver.wait_until_element_in_visible(self.DELETE_USER)
 
     def search_user(self, user_information: dict[str, str]) -> None:
         if USER_NAME in user_information:
